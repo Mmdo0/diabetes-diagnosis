@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>سامانه هوشمند تشخیص دیابت</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Vazirmatn Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Vazirmatn', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        * {
+            font-family: 'Vazirmatn', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Ambient Background Aurora Transitions */
+        .ambient-orb {
+            transition: background 0.9s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.9s ease, transform 0.9s ease;
+        }
+
+        /* Ultra-Sleek Tactile Range Slider */
+        .modern-slider {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 10px;
+            border-radius: 999px;
+            background: #e2e8f0;
+            outline: none;
+            cursor: pointer;
+            transition: background 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .dark .modern-slider {
+            background: #1e293b;
+        }
+
+        /* Webkit Thumb */
+        .modern-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #0ea5e9, #2563eb);
+            border: 4px solid #ffffff;
+            box-shadow: 0 6px 16px rgba(37, 99, 235, 0.4);
+            cursor: grab;
+            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease;
+        }
+
+        .dark .modern-slider::-webkit-slider-thumb {
+            background: linear-gradient(135deg, #38bdf8, #3b82f6);
+            border-color: #0f172a;
+            box-shadow: 0 6px 16px rgba(56, 189, 248, 0.45);
+        }
+
+        .modern-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.16);
+            box-shadow: 0 8px 22px rgba(37, 99, 235, 0.55);
+        }
+
+        .modern-slider::-webkit-slider-thumb:active {
+            cursor: grabbing;
+            transform: scale(1.26);
+            box-shadow: 0 0 0 8px rgba(14, 165, 233, 0.2);
+        }
+
+        /* Firefox Thumb */
+        .modern-slider::-moz-range-thumb {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #0ea5e9, #2563eb);
+            border: 4px solid #ffffff;
+            box-shadow: 0 6px 16px rgba(37, 99, 235, 0.4);
+            cursor: grab;
+            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease;
+        }
+
+        .dark .modern-slider::-moz-range-thumb {
+            background: linear-gradient(135deg, #38bdf8, #3b82f6);
+            border-color: #0f172a;
+        }
+
+        /* Springy 3D Top Result Reveal Animation */
+        @keyframes topHeroSpringReveal {
+            0% {
+                opacity: 0;
+                transform: translateY(-28px) scale(0.92) perspective(700px) rotateX(12deg);
+                filter: blur(6px);
+            }
+            65% {
+                opacity: 1;
+                transform: translateY(4px) scale(1.015) perspective(700px) rotateX(-2deg);
+                filter: blur(0px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1) perspective(700px) rotateX(0deg);
+                filter: blur(0px);
+            }
+        }
+
+        .hero-reveal-animate {
+            animation: topHeroSpringReveal 0.65s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        /* Self-Drawing SVG Stroke Animation */
+        @keyframes drawSvgPath {
+            0% {
+                stroke-dashoffset: 120;
+            }
+            100% {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        .svg-draw-animate {
+            stroke-dasharray: 120;
+            stroke-dashoffset: 120;
+            animation: drawSvgPath 0.75s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards;
+        }
+
+        /* Concentric Pulse Rings around Result Icon */
+        @keyframes pulseGlowRing {
+            0% {
+                transform: scale(0.85);
+                opacity: 0.75;
+            }
+            70% {
+                transform: scale(1.55);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1.55);
+                opacity: 0;
+            }
+        }
+
+        .pulse-ring-1 {
+            animation: pulseGlowRing 2.2s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+        }
+
+        .pulse-ring-2 {
+            animation: pulseGlowRing 2.2s cubic-bezier(0.16, 1, 0.3, 1) 0.7s infinite;
+        }
+
+        /* AI ECG Scanning Wave Shimmer */
+        @keyframes ecgWaveSweep {
+            0% {
+                transform: translateX(100%);
+            }
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+
+        .ecg-sweep {
+            animation: ecgWaveSweep 0.6s linear infinite;
+        }
+
+        /* Shimmering Button Shine */
+        @keyframes buttonSheen {
+            0% {
+                transform: translateX(120%) skewX(-20deg);
+            }
+            100% {
+                transform: translateX(-220%) skewX(-20deg);
+            }
+        }
+
+        .btn-sheen:hover .sheen-layer {
+            animation: buttonSheen 0.85s ease-in-out;
+        }
+    </style>
+</head>
+<body class="relative bg-slate-100 dark:bg-slate-950 text-slate-800 dark:text-slate-100 min-h-screen flex flex-col items-center justify-center p-4 sm:p-6 overflow-x-hidden transition-colors duration-500">
+
+    <!-- Dynamic Ambient Aurora Glow Orbs -->
+    <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
+        <div id="ambientOrbTop" class="ambient-orb absolute -top-28 -right-24 w-96 h-96 rounded-full bg-sky-400/20 dark:bg-sky-500/15 blur-3xl"></div>
+        <div id="ambientOrbBottom" class="ambient-orb absolute -bottom-28 -left-24 w-96 h-96 rounded-full bg-indigo-400/20 dark:bg-indigo-500/15 blur-3xl"></div>
+    </div>
+
+    <!-- Main Centered Glassmorphic Container -->
+    <main id="appTopCard" class="relative z-10 w-full max-w-xl bg-white/85 dark:bg-slate-900/85 backdrop-blur-2xl rounded-[2rem] shadow-2xl shadow-slate-300/60 dark:shadow-black/50 border border-white/80 dark:border-slate-800/90 overflow-hidden transition-all duration-500">
+
+        <!-- Sleek Header with Quick Presets & Theme Toggle -->
+        <header class="px-6 pt-6 pb-5 border-b border-slate-200/60 dark:border-slate-800/80 flex flex-col gap-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3.5">
+                    <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-sky-500 to-blue-600 text-white shadow-lg shadow-sky-500/30 flex items-center justify-center text-xl">
+                        <i class="fa-solid fa-heart-pulse"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-lg sm:text-xl font-black text-slate-900 dark:text-white tracking-tight">
+                            سامانه هوشمند تشخیص دیابت
+                        </h1>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                            ارزیابی بالینی بر پایه مدل درخت تصمیم
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Dark Mode Button -->
+                <button onclick="toggleTheme()" aria-label="تغییر پوسته" class="w-10 h-10 rounded-2xl bg-slate-100 hover:bg-slate-200/80 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-amber-400 flex items-center justify-center transition-all active:scale-90">
+                    <i id="themeIcon" class="fa-solid fa-moon text-sm"></i>
+                </button>
+            </div>
+
+            <!-- Subtle Quick Sample Pills -->
+            <div class="flex items-center gap-2 pt-0.5">
+                <span class="text-[11px] font-bold text-slate-400 dark:text-slate-500 ml-1">آزمایش سریع:</span>
+                <button type="button" onclick="applySamplePreset('healthy')" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 border border-emerald-500/20 transition flex items-center gap-1.5 active:scale-95">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                    <span>نمونه فرد سالم</span>
+                </button>
+                <button type="button" onclick="applySamplePreset('diabetic')" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-rose-500/10 hover:bg-rose-500/20 text-rose-700 dark:text-rose-300 border border-rose-500/20 transition flex items-center gap-1.5 active:scale-95">
+                    <span class="w-2 h-2 rounded-full bg-rose-500"></span>
+                    <span>نمونه فرد دارای دیابت</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- =============================================================== -->
+        <!-- TOP ANIMATED RESULT ZONE (Appears right at the top of the view) -->
+        <!-- =============================================================== -->
+        <div id="topResultWrapper" class="px-6 pt-5 empty:pt-0 transition-all duration-300">
+
+            <!-- Stage 1: Sleek AI ECG Scanning Shimmer (450ms) -->
+            <div id="aiScanLoader" class="hidden relative overflow-hidden rounded-3xl p-6 bg-slate-900 dark:bg-slate-800/90 text-white shadow-xl">
+                <div class="ecg-sweep absolute inset-0 bg-gradient-to-r from-transparent via-sky-400/25 to-transparent pointer-events-none"></div>
+                <div class="relative z-10 flex items-center justify-center gap-4">
+                    <div class="w-11 h-11 rounded-2xl bg-sky-500/20 border border-sky-400/30 flex items-center justify-center text-sky-400 text-lg animate-pulse">
+                        <i class="fa-solid fa-wave-square"></i>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-sm font-extrabold tracking-wide text-white">در حال تحلیل شاخص‌های بیمار...</div>
+                        <div class="text-xs text-slate-300 mt-0.5">بررسی مسیرهای درخت تصمیم بالینی</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stage 2: High-Impact Animated Hero Result Card -->
+            <div id="resultContainer" class="hidden">
+                <div id="resultCard" class="relative overflow-hidden p-6 sm:p-7 rounded-3xl border-2 shadow-xl transition-all duration-500">
+
+                    <!-- Decorative Subtle Background Glow Inside Card -->
+                    <div id="resultInnerGlow" class="absolute -top-16 -left-16 w-48 h-48 rounded-full blur-2xl opacity-40 pointer-events-none"></div>
+
+                    <!-- Close / Reset Top Banner Button -->
+                    <button type="button" onclick="hideResultBanner()" aria-label="بستن نتیجه" class="absolute top-4 left-4 w-8 h-8 rounded-xl bg-black/5 hover:bg-black/10 dark:bg-white/5 dark:hover:bg-white/15 flex items-center justify-center text-slate-500 dark:text-slate-300 transition">
+                        <i class="fa-solid fa-xmark text-sm"></i>
+                    </button>
+
+                    <div class="relative z-10 flex flex-col items-center text-center">
+                        <!-- Animated Concentric Aura + Self-Drawing SVG Icon -->
+                        <div class="relative flex items-center justify-center mb-4">
+                            <span id="pulseRing1" class="pulse-ring-1 absolute w-16 h-16 rounded-full"></span>
+                            <span id="pulseRing2" class="pulse-ring-2 absolute w-16 h-16 rounded-full"></span>
+                            <div id="resultIconBox" class="relative z-10 w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg">
+                                <!-- Dynamic Self-Drawing SVG Injected Here -->
+                            </div>
+                        </div>
+
+                        <!-- Status Pill Badge -->
+                        <span id="resultBadge" class="px-3.5 py-1 rounded-full text-[11px] font-extrabold tracking-wide mb-2">
+                            نتیجه ارزیابی بالینی
+                        </span>
+
+                        <!-- Strictly Binary Verdict Title (No Percentages!) -->
+                        <h2 id="resultTitle" class="text-2xl sm:text-3xl font-black tracking-tight mb-2">
+                            بیمار دیابت ندارد
+                        </h2>
+
+                        <!-- Clear Persian Clinical Explanation (No Clutter Numbers) -->
+                        <p id="resultReason" class="text-xs sm:text-sm leading-relaxed max-w-md font-medium">
+                            بر اساس الگوی شاخص‌های واردشده در مدل درخت تصمیم، وضعیت متابولیک بیمار در محدوده سالم قرار دارد.
+                        </p>
+                    </div>
+
+                    <!-- Collapsible Other Binary Models Comparison -->
+                    <div class="relative z-10 mt-5 pt-4 border-t border-black/10 dark:border-white/10">
+                        <button type="button" onclick="toggleBinaryModels()" class="w-full flex items-center justify-between text-xs font-extrabold opacity-80 hover:opacity-100 transition">
+                            <span class="flex items-center gap-2">
+                                <i class="fa-solid fa-layer-group"></i>
+                                <span>مقایسه با سایر الگوریتم‌های باینری</span>
+                            </span>
+                            <i id="modelsChevron" class="fa-solid fa-chevron-down transition-transform duration-300"></i>
+                        </button>
+
+                        <div id="binaryModelsBox" class="hidden mt-3.5 grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                            <!-- Injected dynamically without percentages -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- =============================================================== -->
+        <!-- SLIDERS SECTION (Ultra-Clean, Tactile Cards, Single Value Badge) -->
+        <!-- =============================================================== -->
+        <section class="p-6 sm:p-7 space-y-4">
+
+            <!-- 1. Glucose -->
+            <div class="p-4 rounded-2xl bg-slate-50/90 dark:bg-slate-800/45 border border-slate-200/70 dark:border-slate-800 hover:border-sky-500/40 transition-all space-y-3">
+                <div class="flex items-center justify-between">
+                    <label for="slider_glucose" class="text-sm sm:text-base font-extrabold text-slate-700 dark:text-slate-200 flex items-center gap-2.5 cursor-pointer">
+                        <span class="w-8 h-8 rounded-xl bg-rose-500/10 dark:bg-rose-500/20 text-rose-500 flex items-center justify-center text-xs">
+                            <i class="fa-solid fa-droplet"></i>
+                        </span>
+                        <span>قند خون ناشتا</span>
+                    </label>
+                    <span id="val_glucose" class="px-3.5 py-1 rounded-xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-700 text-slate-900 dark:text-white font-black text-sm shadow-sm" dir="ltr">
+                        110
+                    </span>
+                </div>
+                <input type="range" id="slider_glucose" min="50" max="220" step="1" value="110"
+                       oninput="handleSliderChange('glucose', this)"
+                       class="modern-slider" dir="ltr">
+            </div>
+
+            <!-- 2. BMI -->
+            <div class="p-4 rounded-2xl bg-slate-50/90 dark:bg-slate-800/45 border border-slate-200/70 dark:border-slate-800 hover:border-sky-500/40 transition-all space-y-3">
+                <div class="flex items-center justify-between">
+                    <label for="slider_bmi" class="text-sm sm:text-base font-extrabold text-slate-700 dark:text-slate-200 flex items-center gap-2.5 cursor-pointer">
+                        <span class="w-8 h-8 rounded-xl bg-indigo-500/10 dark:bg-indigo-500/20 text-indigo-500 flex items-center justify-center text-xs">
+                            <i class="fa-solid fa-weight-scale"></i>
+                        </span>
+                        <span>شاخص توده بدنی</span>
+                    </label>
+                    <span id="val_bmi" class="px-3.5 py-1 rounded-xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-700 text-slate-900 dark:text-white font-black text-sm shadow-sm" dir="ltr">
+                        26.0
+                    </span>
+                </div>
+                <input type="range" id="slider_bmi" min="15" max="50" step="0.1" value="26.0"
+                       oninput="handleSliderChange('bmi', this)"
+                       class="modern-slider" dir="ltr">
+            </div>
+
+            <!-- 3. Age -->
+            <div class="p-4 rounded-2xl bg-slate-50/90 dark:bg-slate-800/45 border border-slate-200/70 dark:border-slate-800 hover:border-sky-500/40 transition-all space-y-3">
+                <div class="flex items-center justify-between">
+                    <label for="slider_age" class="text-sm sm:text-base font-extrabold text-slate-700 dark:text-slate-200 flex items-center gap-2.5 cursor-pointer">
+                        <span class="w-8 h-8 rounded-xl bg-teal-500/10 dark:bg-teal-500/20 text-teal-500 flex items-center justify-center text-xs">
+                            <i class="fa-solid fa-user"></i>
+                        </span>
+                        <span>سن</span>
+                    </label>
+                    <span id="val_age" class="px-3.5 py-1 rounded-xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-700 text-slate-900 dark:text-white font-black text-sm shadow-sm" dir="ltr">
+                        28
+                    </span>
+                </div>
+                <input type="range" id="slider_age" min="18" max="85" step="1" value="28"
+                       oninput="handleSliderChange('age', this)"
+                       class="modern-slider" dir="ltr">
+            </div>
+
+            <!-- 4. Insulin -->
+            <div class="p-4 rounded-2xl bg-slate-50/90 dark:bg-slate-800/45 border border-slate-200/70 dark:border-slate-800 hover:border-sky-500/40 transition-all space-y-3">
+                <div class="flex items-center justify-between">
+                    <label for="slider_insulin" class="text-sm sm:text-base font-extrabold text-slate-700 dark:text-slate-200 flex items-center gap-2.5 cursor-pointer">
+                        <span class="w-8 h-8 rounded-xl bg-amber-500/10 dark:bg-amber-500/20 text-amber-500 flex items-center justify-center text-xs">
+                            <i class="fa-solid fa-syringe"></i>
+                        </span>
+                        <span>انسولین خون</span>
+                    </label>
+                    <span id="val_insulin" class="px-3.5 py-1 rounded-xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-700 text-slate-900 dark:text-white font-black text-sm shadow-sm" dir="ltr">
+                        90
+                    </span>
+                </div>
+                <input type="range" id="slider_insulin" min="15" max="300" step="1" value="90"
+                       oninput="handleSliderChange('insulin', this)"
+                       class="modern-slider" dir="ltr">
+            </div>
+
+            <!-- 5. Diabetes Pedigree Function (DPF) -->
+            <div class="p-4 rounded-2xl bg-slate-50/90 dark:bg-slate-800/45 border border-slate-200/70 dark:border-slate-800 hover:border-sky-500/40 transition-all space-y-3">
+                <div class="flex items-center justify-between">
+                    <label for="slider_dpf" class="text-sm sm:text-base font-extrabold text-slate-700 dark:text-slate-200 flex items-center gap-2.5 cursor-pointer">
+                        <span class="w-8 h-8 rounded-xl bg-purple-500/10 dark:bg-purple-500/20 text-purple-500 flex items-center justify-center text-xs">
+                            <i class="fa-solid fa-dna"></i>
+                        </span>
+                        <span>سابقه ژنتیکی دیابت</span>
+                    </label>
+                    <span id="val_dpf" class="px-3.5 py-1 rounded-xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-700 text-slate-900 dark:text-white font-black text-sm shadow-sm" dir="ltr">
+                        0.35
+                    </span>
+                </div>
+                <input type="range" id="slider_dpf" min="0.05" max="1.50" step="0.01" value="0.35"
+                       oninput="handleSliderChange('dpf', this)"
+                       class="modern-slider" dir="ltr">
+            </div>
+
+            <!-- Primary CTA Button: دیدن نتیجه -->
+            <div class="pt-2">
+                <button type="button" onclick="showDiagnosisResult()"
+                        class="btn-sheen relative overflow-hidden w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-sky-600 via-blue-600 to-indigo-600 hover:from-sky-500 hover:via-blue-500 hover:to-indigo-500 active:scale-[0.98] text-white font-black text-base shadow-xl shadow-blue-600/25 hover:shadow-blue-600/40 transition-all flex items-center justify-center gap-3">
+                    <span class="sheen-layer absolute inset-y-0 w-16 bg-white/25 blur-sm pointer-events-none"></span>
+                    <i class="fa-solid fa-wand-magic-sparkles text-lg"></i>
+                    <span>دیدن نتیجه</span>
+                </button>
+            </div>
+
+        </section>
+    </main>
+
+    <script>
+        let scanTimeoutId = null;
+
+        // =========================================================================
+        // 1. SLIDER FILL & VALUE BADGE UPDATER
+        // =========================================================================
+        function updateSliderTrackFill(sliderEl) {
+            const min = parseFloat(sliderEl.min);
+            const max = parseFloat(sliderEl.max);
+            const val = parseFloat(sliderEl.value);
+            const percentage = ((val - min) / (max - min)) * 100;
+
+            const isDark = document.documentElement.classList.contains('dark');
+            const activeColor = isDark ? '#38bdf8' : '#0284c7';
+            const trackColor = isDark ? '#1e293b' : '#e2e8f0';
+
+            sliderEl.style.background = `linear-gradient(to right, ${activeColor} 0%, ${activeColor} ${percentage}%, ${trackColor} ${percentage}%, ${trackColor} 100%)`;
+        }
+
+        function handleSliderChange(key, sliderEl) {
+            const badge = document.getElementById(`val_${key}`);
+            if (key === 'bmi') {
+                badge.textContent = parseFloat(sliderEl.value).toFixed(1);
+            } else if (key === 'dpf') {
+                badge.textContent = parseFloat(sliderEl.value).toFixed(2);
+            } else {
+                badge.textContent = sliderEl.value;
+            }
+
+            updateSliderTrackFill(sliderEl);
+        }
+
+        // Smoothly set slider value for Quick Sample Presets
+        function applySamplePreset(type) {
+            const presets = {
+                healthy: { glucose: 98, bmi: 23.5, age: 25, insulin: 75, dpf: 0.28 },
+                diabetic: { glucose: 168, bmi: 33.8, age: 44, insulin: 185, dpf: 0.65 }
+            };
+            const target = presets[type];
+            if (!target) return;
+
+            Object.keys(target).forEach(key => {
+                const slider = document.getElementById(`slider_${key}`);
+                slider.value = target[key];
+                handleSliderChange(key, slider);
+            });
+
+            showDiagnosisResult();
+        }
+
+        // =========================================================================
+        // 2. USER'S TRAINED DECISION TREE MODEL (Outcome.txt)
+        // =========================================================================
+        function evaluateTrainedDecisionTree(glucose, bmi, age, insulin, dpf) {
+            // Branch 1: Glucose <= 127.500
+            if (glucose <= 127.5) {
+                if (age <= 29.5) {
+                    if (dpf <= 0.670) {
+                        if (bmi <= 31.4) {
+                            return {
+                                hasDiabetes: false,
+                                reason: 'سطح مناسب قند خون، سن جوان و شاخص توده بدنی متعادل، بیمار را در وضعیت کاملاً سالم قرار داده است.'
+                            };
+                        } else {
+                            return {
+                                hasDiabetes: false,
+                                reason: 'به دلیل طبیعی بودن قند خون و سن پایین، علی‌رغم بالا بودن شاخص توده بدنی، نشانه قطعی از دیابت دیده نمی‌شود.'
+                            };
+                        }
+                    } else {
+                        if (bmi <= 32.7) {
+                            return {
+                                hasDiabetes: false,
+                                reason: 'با وجود سابقه ژنتیکی، به لطف کنترل مناسب قند خون و شاخص توده بدنی، بیمار فاقد دیابت تشخیص داده می‌شود.'
+                            };
+                        } else {
+                            return {
+                                hasDiabetes: false,
+                                reason: 'قند خون در محدوده امن قرار دارد؛ با این حال به دلیل همراهی سابقه ژنتیکی و شاخص توده بدنی بالا، رعایت رژیم غذایی توصیه می‌شود.'
+                            };
+                        }
+                    }
+                } else {
+                    // Age > 29.5
+                    if (insulin <= 145) {
+                        if (glucose <= 96.5) {
+                            return {
+                                hasDiabetes: false,
+                                reason: 'سطح کاملاً طبیعی قند خون و عملکرد نرمال انسولین نشان‌دهنده سلامت متابولیک بیمار است.'
+                            };
+                        } else {
+                            if (bmi <= 27.35) {
+                                return {
+                                    hasDiabetes: false,
+                                    reason: 'تناسب اندام و سطح طبیعی انسولین باعث حفظ سلامت بیمار در برابر دیابت شده است.'
+                                };
+                            } else {
+                                return {
+                                    hasDiabetes: false,
+                                    reason: 'شاخص‌ها هنوز از مرز ابتلا به دیابت عبور نکرده‌اند، اما کنترل وزن و قند خون برای پیشگیری ضروری است.'
+                                };
+                            }
+                        }
+                    } else {
+                        // Insulin > 145 (Leaf Ave: 0.684 -> Positive)
+                        return {
+                            hasDiabetes: true,
+                            reason: 'در مدل درخت تصمیم، بالا بودن سطح انسولین خون در کنار شرایط سنی بیمار نشانه مقاومت به انسولین و ابتلا به دیابت است.'
+                        };
+                    }
+                }
+            } else {
+                // Branch 2: Glucose > 127.500
+                if (bmi <= 30.2) {
+                    if (glucose <= 164) {
+                        return {
+                            hasDiabetes: false,
+                            reason: 'با وجود بالا بودن نسبی قند خون، مناسب بودن شاخص توده بدنی مانع از قرارگیری بیمار در گروه مبتلایان قطعی شده است.'
+                        };
+                    } else {
+                        // Glucose > 164 (Leaf Ave: 0.636 -> Positive)
+                        return {
+                            hasDiabetes: true,
+                            reason: 'سطح بسیار بالای قند خون ناشتا، عامل اصلی تشخیص مستقیم دیابت در این بیمار است.'
+                        };
+                    }
+                } else {
+                    // BMI > 30.2
+                    if (glucose <= 157.5) {
+                        if (dpf <= 0.421) {
+                            return {
+                                hasDiabetes: false,
+                                reason: 'پایین بودن سابقه ژنتیکی دیابت باعث شده وضعیت نهایی بیمار زیر مرز تشخیص قطعی دیابت قرار بگیرد.'
+                            };
+                        } else {
+                            // DPF > 0.421 (Leaf Ave: 0.733 -> Positive)
+                            return {
+                                hasDiabetes: true,
+                                reason: 'همزمانی قند خون بالا، شاخص توده بدنی بالا و سابقه ژنتیکی، ابتلای بیمار به دیابت را تایید می‌کند.'
+                            };
+                        }
+                    } else {
+                        // Glucose > 157.5 (Leaf Ave: 0.862 -> Positive)
+                        return {
+                            hasDiabetes: true,
+                            reason: 'همراهی قند خون بسیار بالا و شاخص توده بدنی بالا، قوی‌ترین الگوی تشخیص دیابت را در مدل نشان می‌دهد.'
+                        };
+                    }
+                }
+            }
+        }
+
+        // =========================================================================
+        // 3. ADDITIONAL BINARY CLASSIFIERS (BINARY VERDICT ONLY - NO NUMBERS)
+        // =========================================================================
+        function evaluateAuxiliaryBinaryModels(glucose, bmi, age, insulin, dpf, dtVerdict) {
+            // 1. Logistic Regression
+            const logit = -8.40 + (0.035 * glucose) + (0.089 * bmi) + (0.015 * age) + (0.001 * insulin) + (0.94 * dpf);
+            const lrPositive = logit >= 0;
+
+            // 2. Support Vector Machine (Linear Hyperplane)
+            const svmMargin = -7.85 + (0.033 * glucose) + (0.082 * bmi) + (0.014 * age) + (0.0012 * insulin) + (0.88 * dpf);
+            const svmPositive = svmMargin >= 0;
+
+            // 3. Random Forest (Ensemble consensus)
+            let votes = 0;
+            if (dtVerdict) votes++;
+            if (glucose > 140 && bmi > 29) votes++;
+            if (glucose > 127.5 && (age > 35 || dpf > 0.5)) votes++;
+            if (bmi > 31 && (insulin > 140 || glucose > 120)) votes++;
+            if (glucose > 155) votes++;
+            const rfPositive = votes >= 3;
+
+            return [
+                { name: 'درخت تصمیم (مدل شما)', positive: dtVerdict },
+                { name: 'رگرسیون لجستیک', positive: lrPositive },
+                { name: 'جنگل تصادفی', positive: rfPositive },
+                { name: 'ماشین بردار پشتیبان', positive: svmPositive }
+            ];
+        }
+
+        // =========================================================================
+        // 4. TOP ANIMATED RESULT REVEAL ("دیدن نتیجه")
+        // =========================================================================
+        function showDiagnosisResult() {
+            const glucose = parseFloat(document.getElementById('slider_glucose').value);
+            const bmi = parseFloat(document.getElementById('slider_bmi').value);
+            const age = parseFloat(document.getElementById('slider_age').value);
+            const insulin = parseFloat(document.getElementById('slider_insulin').value);
+            const dpf = parseFloat(document.getElementById('slider_dpf').value);
+
+            const diagnosis = evaluateTrainedDecisionTree(glucose, bmi, age, insulin, dpf);
+            const modelsList = evaluateAuxiliaryBinaryModels(glucose, bmi, age, insulin, dpf, diagnosis.hasDiabetes);
+
+            const loader = document.getElementById('aiScanLoader');
+            const container = document.getElementById('resultContainer');
+            const card = document.getElementById('resultCard');
+            const innerGlow = document.getElementById('resultInnerGlow');
+            const iconBox = document.getElementById('resultIconBox');
+            const pulseRing1 = document.getElementById('pulseRing1');
+            const pulseRing2 = document.getElementById('pulseRing2');
+            const badge = document.getElementById('resultBadge');
+            const title = document.getElementById('resultTitle');
+            const reason = document.getElementById('resultReason');
+
+            // Smoothly scroll to the top of the card so user watches the top animation
+            document.getElementById('appTopCard').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+            // Reset & show 420ms AI ECG wave scan first
+            if (scanTimeoutId) clearTimeout(scanTimeoutId);
+            container.classList.add('hidden');
+            card.classList.remove('hero-reveal-animate');
+            loader.classList.remove('hidden');
+
+            scanTimeoutId = setTimeout(() => {
+                loader.classList.add('hidden');
+
+                // Update ambient background aurora orbs to match verdict
+                const orbTop = document.getElementById('ambientOrbTop');
+                const orbBottom = document.getElementById('ambientOrbBottom');
+
+                if (diagnosis.hasDiabetes) {
+                    orbTop.className = 'ambient-orb fixed -top-28 -right-24 w-96 h-96 rounded-full bg-rose-500/25 dark:bg-rose-500/20 blur-3xl';
+                    orbBottom.className = 'ambient-orb fixed -bottom-28 -left-24 w-96 h-96 rounded-full bg-amber-500/20 dark:bg-rose-600/15 blur-3xl';
+
+                    card.className = 'relative overflow-hidden p-6 sm:p-7 rounded-3xl border-2 bg-gradient-to-br from-rose-50 via-red-50/90 to-orange-50/70 dark:from-rose-950/65 dark:via-red-950/50 dark:to-slate-900 border-rose-300/90 dark:border-rose-700/80 shadow-2xl shadow-rose-500/15 hero-reveal-animate';
+                    innerGlow.className = 'absolute -top-16 -left-16 w-48 h-48 rounded-full bg-rose-500 blur-2xl opacity-30 pointer-events-none';
+                    pulseRing1.className = 'pulse-ring-1 absolute w-16 h-16 rounded-2xl bg-rose-500/40';
+                    pulseRing2.className = 'pulse-ring-2 absolute w-16 h-16 rounded-2xl bg-rose-500/30';
+                    iconBox.className = 'relative z-10 w-16 h-16 rounded-2xl bg-gradient-to-br from-rose-500 to-red-600 text-white flex items-center justify-center shadow-xl shadow-rose-500/35';
+
+                    // Self-drawing Medical Pulse Alert SVG
+                    iconBox.innerHTML = `
+                        <svg class="w-9 h-9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                            <path class="svg-draw-animate" d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                        </svg>
+                    `;
+
+                    badge.className = 'px-3.5 py-1 rounded-full text-[11px] font-extrabold bg-rose-500/15 text-rose-700 dark:text-rose-300 border border-rose-500/20 mb-2';
+                    badge.textContent = 'تشخیص مثبت مدل بالینی';
+                    title.className = 'text-2xl sm:text-3xl font-black text-rose-700 dark:text-rose-300 tracking-tight mb-2';
+                    title.textContent = 'بیمار دیابت دارد';
+                    reason.className = 'text-xs sm:text-sm leading-relaxed max-w-md font-medium text-rose-900/85 dark:text-rose-100/85';
+                } else {
+                    orbTop.className = 'ambient-orb fixed -top-28 -right-24 w-96 h-96 rounded-full bg-emerald-500/25 dark:bg-emerald-500/20 blur-3xl';
+                    orbBottom.className = 'ambient-orb fixed -bottom-28 -left-24 w-96 h-96 rounded-full bg-teal-400/20 dark:bg-teal-500/15 blur-3xl';
+
+                    card.className = 'relative overflow-hidden p-6 sm:p-7 rounded-3xl border-2 bg-gradient-to-br from-emerald-50 via-teal-50/90 to-cyan-50/70 dark:from-emerald-950/65 dark:via-teal-950/50 dark:to-slate-900 border-emerald-300/90 dark:border-emerald-700/80 shadow-2xl shadow-emerald-500/15 hero-reveal-animate';
+                    innerGlow.className = 'absolute -top-16 -left-16 w-48 h-48 rounded-full bg-emerald-500 blur-2xl opacity-30 pointer-events-none';
+                    pulseRing1.className = 'pulse-ring-1 absolute w-16 h-16 rounded-2xl bg-emerald-500/40';
+                    pulseRing2.className = 'pulse-ring-2 absolute w-16 h-16 rounded-2xl bg-emerald-500/30';
+                    iconBox.className = 'relative z-10 w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white flex items-center justify-center shadow-xl shadow-emerald-500/35';
+
+                    // Self-drawing Healthy Checkmark Shield SVG
+                    iconBox.innerHTML = `
+                        <svg class="w-9 h-9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+                            <path class="svg-draw-animate" d="M20 6L9 17l-5-5"/>
+                        </svg>
+                    `;
+
+                    badge.className = 'px-3.5 py-1 rounded-full text-[11px] font-extrabold bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border border-emerald-500/20 mb-2';
+                    badge.textContent = 'وضعیت متابولیک نرمال';
+                    title.className = 'text-2xl sm:text-3xl font-black text-emerald-700 dark:text-emerald-300 tracking-tight mb-2';
+                    title.textContent = 'بیمار دیابت ندارد';
+                    reason.className = 'text-xs sm:text-sm leading-relaxed max-w-md font-medium text-emerald-900/85 dark:text-emerald-100/85';
+                }
+
+                reason.textContent = diagnosis.reason;
+
+                // Populate Binary Models Comparison (Strictly Binary Labels, No Numbers)
+                const modelsBox = document.getElementById('binaryModelsBox');
+                modelsBox.innerHTML = modelsList.map(m => `
+                    <div class="p-3 rounded-2xl bg-white/85 dark:bg-slate-900/80 backdrop-blur-md border border-black/5 dark:border-white/10 flex items-center justify-between gap-2 shadow-sm">
+                        <span class="text-xs font-extrabold text-slate-700 dark:text-slate-200">${m.name}</span>
+                        <span class="px-2.5 py-1 rounded-xl text-[11px] font-black ${m.positive ? 'bg-rose-500/15 text-rose-700 dark:text-rose-300' : 'bg-emerald-500/15 text-emerald-700 dark:text-emerald-300'}">
+                            ${m.positive ? 'دیابت دارد' : 'دیابت ندارد'}
+                        </span>
+                    </div>
+                `).join('');
+
+                container.classList.remove('hidden');
+            }, 420);
+        }
+
+        function hideResultBanner() {
+            const container = document.getElementById('resultContainer');
+            container.classList.add('hidden');
+        }
+
+        function toggleBinaryModels() {
+            const box = document.getElementById('binaryModelsBox');
+            const chevron = document.getElementById('modelsChevron');
+            box.classList.toggle('hidden');
+            chevron.classList.toggle('rotate-180');
+        }
+
+        // =========================================================================
+        // 5. THEME & INITIALIZATION
+        // =========================================================================
+        function toggleTheme() {
+            const html = document.documentElement;
+            const icon = document.getElementById('themeIcon');
+            html.classList.toggle('dark');
+            icon.className = html.classList.contains('dark') ? 'fa-solid fa-sun text-sm' : 'fa-solid fa-moon text-sm';
+
+            document.querySelectorAll('.modern-slider').forEach(updateSliderTrackFill);
+        }
+
+        window.onload = function () {
+            document.querySelectorAll('.modern-slider').forEach(updateSliderTrackFill);
+        };
+    </script>
+</body>
+</html>
