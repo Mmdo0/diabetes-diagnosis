@@ -12,7 +12,7 @@
             box-sizing: border-box;
             user-select: none;
         }
-
+ 
         body {
             background-color: #050914;
             color: #f8fafc;
@@ -21,7 +21,7 @@
             position: relative;
             transition: background-color 0.8s ease;
         }
-
+ 
         /* Ambient Aurora Orbs */
         .ambient-orb {
             position: fixed;
@@ -32,7 +32,7 @@
             transition: all 1s cubic-bezier(0.22, 1, 0.36, 1);
             opacity: 0.32;
         }
-
+ 
         .orb-1 {
             width: 440px;
             height: 440px;
@@ -40,7 +40,7 @@
             top: -120px;
             right: -100px;
         }
-
+ 
         .orb-2 {
             width: 380px;
             height: 380px;
@@ -48,7 +48,7 @@
             bottom: -120px;
             left: -100px;
         }
-
+ 
         body.state-healthy .orb-1 {
             background: radial-gradient(circle, #10b981, transparent 70%);
             opacity: 0.45;
@@ -58,7 +58,7 @@
             background: radial-gradient(circle, #059669, transparent 70%);
             opacity: 0.35;
         }
-
+ 
         body.state-diabetic .orb-1 {
             background: radial-gradient(circle, #f43f5e, transparent 70%);
             opacity: 0.48;
@@ -68,7 +68,7 @@
             background: radial-gradient(circle, #e11d48, transparent 70%);
             opacity: 0.35;
         }
-
+ 
         /* Glass Card */
         .glass-card {
             background: rgba(15, 23, 42, 0.78);
@@ -77,7 +77,7 @@
             border: 1px solid rgba(255, 255, 255, 0.08);
             box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.7), inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
         }
-
+ 
         /* Stepper Transitions */
         .wizard-step {
             display: none;
@@ -86,7 +86,7 @@
         .wizard-step.active {
             display: block;
         }
-
+ 
         @keyframes stepFadeIn {
             0% {
                 opacity: 0;
@@ -97,8 +97,8 @@
                 transform: translateY(0) scale(1);
             }
         }
-
-        /* Selection Cards (Services & Models) */
+ 
+        /* Selection Cards */
         .select-card {
             background: rgba(30, 41, 59, 0.45);
             border: 1.5px solid rgba(255, 255, 255, 0.07);
@@ -121,7 +121,7 @@
             cursor: not-allowed;
             filter: grayscale(0.35);
         }
-
+ 
         /* Shake animation when clicking locked service */
         @keyframes lockedShake {
             0%, 100% { transform: translateX(0); }
@@ -132,8 +132,8 @@
         .shake-locked {
             animation: lockedShake 0.35s ease;
         }
-
-        /* Smooth Sliders */
+ 
+        /* Smooth Sliders & Input Rows */
         .slider-row {
             padding: 1rem 1.15rem;
             border-radius: 1.1rem;
@@ -145,7 +145,7 @@
             background: rgba(30, 41, 59, 0.72);
             border-color: rgba(56, 189, 248, 0.25);
         }
-
+ 
         input[type=range].clean-slider {
             -webkit-appearance: none;
             appearance: none;
@@ -156,7 +156,7 @@
             outline: none;
             cursor: pointer;
         }
-
+ 
         input[type=range].clean-slider::-webkit-slider-thumb {
             -webkit-appearance: none;
             appearance: none;
@@ -177,7 +177,25 @@
             cursor: grabbing;
             transform: scale(1.06);
         }
-
+ 
+        /* Pill Option Buttons for Boolean / Categorical Tumor Fields */
+        .choice-pill {
+            background: rgba(15, 23, 42, 0.65);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: #94a3b8;
+            transition: all 0.2s ease;
+        }
+        .choice-pill:hover {
+            color: #e2e8f0;
+            border-color: rgba(56, 189, 248, 0.3);
+        }
+        .choice-pill.active {
+            background: linear-gradient(135deg, rgba(14, 165, 233, 0.25), rgba(99, 102, 241, 0.25));
+            border-color: #38bdf8;
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(14, 165, 233, 0.25);
+        }
+ 
         /* Top Hero Result Container */
         #topResultWrapper {
             display: grid;
@@ -200,7 +218,7 @@
         .result-inner {
             overflow: hidden;
         }
-
+ 
         /* Result Card Themes */
         .hero-card {
             position: relative;
@@ -220,7 +238,7 @@
             border: 1.5px solid rgba(244, 63, 94, 0.5);
             box-shadow: 0 22px 50px -12px rgba(244, 63, 94, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.15);
         }
-
+ 
         /* Shimmer sweep */
         .hero-card::after {
             content: '';
@@ -239,7 +257,7 @@
             0% { left: -120%; }
             100% { left: 160%; }
         }
-
+ 
         /* Pulse Ring & SVG Draw */
         .icon-halo {
             position: relative;
@@ -276,12 +294,12 @@
         .halo-diabetic::before, .halo-diabetic::after {
             border: 1.5px solid rgba(251, 113, 133, 0.55);
         }
-
+ 
         @keyframes pulseWave {
             0% { transform: scale(1); opacity: 0.85; }
             100% { transform: scale(1.65); opacity: 0; }
         }
-
+ 
         .svg-draw {
             stroke-dasharray: 100;
             stroke-dashoffset: 100;
@@ -290,7 +308,7 @@
         @keyframes drawPath {
             to { stroke-dashoffset: 0; }
         }
-
+ 
         .ecg-line {
             stroke-dasharray: 300;
             stroke-dashoffset: 300;
@@ -299,7 +317,7 @@
         @keyframes ecgRun {
             to { stroke-dashoffset: 0; }
         }
-
+ 
         /* Primary CTA Button */
         .btn-primary {
             background: linear-gradient(135deg, #0ea5e9 0%, #6366f1 100%);
@@ -316,14 +334,14 @@
     </style>
 </head>
 <body class="py-7 px-4 sm:px-6 flex flex-col items-center justify-center min-h-screen">
-
+ 
     <!-- Background Ambient Orbs -->
     <div class="ambient-orb orb-1"></div>
     <div class="ambient-orb orb-2"></div>
-
+ 
     <!-- Main Container -->
     <div class="w-full max-w-xl relative z-10 my-auto">
-
+ 
         <!-- Top Stepper Progress Indicator -->
         <div class="flex items-center justify-between mb-6 px-2">
             <div class="flex items-center gap-2.5">
@@ -337,7 +355,7 @@
                     <span id="stepTitleBadge" class="text-sm font-bold text-white">گام ۱ از ۳: انتخاب خدمت پزشکی</span>
                 </div>
             </div>
-
+ 
             <!-- Step Dots -->
             <div class="flex items-center gap-2">
                 <span id="dot1" class="w-7 h-2 rounded-full bg-sky-400 transition-all duration-300"></span>
@@ -345,7 +363,7 @@
                 <span id="dot3" class="w-2.5 h-2 rounded-full bg-slate-700 transition-all duration-300"></span>
             </div>
         </div>
-
+ 
         <!-- ==========================================
              STEP 1: WELCOME & DIAGNOSTIC SERVICE SELECTION
              ========================================== -->
@@ -363,11 +381,12 @@
                         بخش تخصصی مورد نظر خود را برای شروع ارزیابی هوشمند بیمار انتخاب کنید
                     </p>
                 </div>
-
+ 
                 <!-- Service Options Grid -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 mb-6">
-                    <!-- Active Option: Diabetes Diagnosis -->
-                    <div class="select-card selected rounded-2xl p-4 cursor-pointer flex flex-col justify-between" onclick="selectService('diabetes')">
+ 
+                    <!-- Active Option 1: Diabetes Diagnosis -->
+                    <div id="service-card-diabetes" class="select-card selected rounded-2xl p-4 cursor-pointer flex flex-col justify-between" onclick="selectService('diabetes')">
                         <div class="flex items-start justify-between mb-3">
                             <div class="w-11 h-11 rounded-xl bg-sky-500/20 border border-sky-400/40 flex items-center justify-center text-sky-300">
                                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -376,18 +395,39 @@
                             </div>
                             <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 flex items-center gap-1">
                                 <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
-                                فعال و آماده
+                                فعال • ۵ مدل
                             </span>
                         </div>
                         <div>
                             <h3 class="text-base font-extrabold text-white mb-1">تشخیص دیابت</h3>
                             <p class="text-xs text-slate-300 leading-relaxed">
-                                ارزیابی بالینی با ۵ مدل آموزش‌دیده (C5.0، C&amp;R Tree، جنگل تصادفی، رگرسیون لجستیک و شبکه عصبی)
+                                ارزیابی بالینی دیابت با ۵ مدل آموزش‌دیده (C5.0، C&amp;R Tree، جنگل تصادفی، لجستیک و شبکه عصبی)
                             </p>
                         </div>
                     </div>
-
-                    <!-- Disabled Option 1: Bone Fracture -->
+ 
+                    <!-- Active Option 2: Brain Tumor Diagnosis (NOW UNLOCKED & ACTIVE) -->
+                    <div id="service-card-tumor" class="select-card rounded-2xl p-4 cursor-pointer flex flex-col justify-between" onclick="selectService('tumor')">
+                        <div class="flex items-start justify-between mb-3">
+                            <div class="w-11 h-11 rounded-xl bg-purple-500/20 border border-purple-400/40 flex items-center justify-center text-purple-300">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                                </svg>
+                            </div>
+                            <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 flex items-center gap-1">
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
+                                فعال • ۳ مدل
+                            </span>
+                        </div>
+                        <div>
+                            <h3 class="text-base font-extrabold text-white mb-1">تشخیص تومور مغزی</h3>
+                            <p class="text-xs text-slate-300 leading-relaxed">
+                                تشخیص نوع تومور مغزی (خوش‌خیم یا بدخیم) با ۳ مدل آموزش‌دیده (C5.0، شبکه بیزین و C&amp;R Tree)
+                            </p>
+                        </div>
+                    </div>
+ 
+                    <!-- Disabled Option 3: Bone Fracture -->
                     <div id="locked-fracture" class="select-card disabled rounded-2xl p-4 flex flex-col justify-between" onclick="triggerLockedNotice('locked-fracture', 'ماژول تشخیص شکستگی استخوان با تصویربرداری X-Ray به‌زودی فعال می‌شود.')">
                         <div class="flex items-start justify-between mb-3">
                             <div class="w-11 h-11 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center text-slate-400">
@@ -406,8 +446,8 @@
                             </p>
                         </div>
                     </div>
-
-                    <!-- Disabled Option 2: Heart Arrhythmia -->
+ 
+                    <!-- Disabled Option 4: Heart Arrhythmia -->
                     <div id="locked-heart" class="select-card disabled rounded-2xl p-4 flex flex-col justify-between" onclick="triggerLockedNotice('locked-heart', 'ماژول تحلیل نوار قلب و سکته قلبی در حال آموزش مدل است.')">
                         <div class="flex items-start justify-between mb-3">
                             <div class="w-11 h-11 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center text-slate-400">
@@ -426,173 +466,42 @@
                             </p>
                         </div>
                     </div>
-
-                    <!-- Disabled Option 3: Brain MRI -->
-                    <div id="locked-brain" class="select-card disabled rounded-2xl p-4 flex flex-col justify-between" onclick="triggerLockedNotice('locked-brain', 'ماژول تشخیص تومور مغزی (MRI) در نسخه بعدی اضافه خواهد شد.')">
-                        <div class="flex items-start justify-between mb-3">
-                            <div class="w-11 h-11 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center text-slate-400">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
-                                </svg>
-                            </div>
-                            <span class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-slate-800 text-slate-400 border border-slate-700">
-                                🔒 به‌زودی
-                            </span>
-                        </div>
-                        <div>
-                            <h3 class="text-base font-bold text-slate-300 mb-1">تشخیص تومور مغزی (MRI)</h3>
-                            <p class="text-xs text-slate-500 leading-relaxed">
-                                بخش‌بندی تصاویر MRI مغز با شبکه‌های عصبی کانولوشن
-                            </p>
-                        </div>
-                    </div>
+ 
                 </div>
-
+ 
                 <!-- Notice Toast for Locked Options -->
                 <div id="lockedToast" class="hidden mb-4 px-4 py-2.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs text-center font-medium"></div>
-
+ 
                 <!-- Step 1 Next Button -->
                 <button onclick="goToStep(2)" class="btn-primary w-full py-4 rounded-2xl text-white font-extrabold text-base flex items-center justify-center gap-2 cursor-pointer">
-                    <span>مرحله بعد: انتخاب مدل تشخیص دیابت</span>
+                    <span id="step1NextBtnText">مرحله بعد: انتخاب مدل تشخیص دیابت</span>
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M15 19l-7-7 7-7"></path>
                     </svg>
                 </button>
             </div>
         </section>
-
+ 
         <!-- ==========================================
-             STEP 2: MODEL SELECTION (ORDERED BY PRIORITY & ACCURACY)
+             STEP 2: MODEL SELECTION (DYNAMIC FOR DIABETES OR TUMOR)
              ========================================== -->
         <section id="step2" class="wizard-step">
             <div class="glass-card rounded-3xl p-6 sm:p-8">
                 <div class="text-center mb-6">
-                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-indigo-500/15 text-indigo-300 border border-indigo-500/30 mb-2.5">
-                        🧠 چیدمان بر اساس اولویت و دقت بالینی
+                    <span id="step2Badge" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-indigo-500/15 text-indigo-300 border border-indigo-500/30 mb-2.5">
+                        🧠 چیدمان بر اساس اولویت و درصد دقت مدل
                     </span>
-                    <h2 class="text-xl sm:text-2xl font-black text-white">
+                    <h2 id="step2Title" class="text-xl sm:text-2xl font-black text-white">
                         مدل هوش مصنوعی را انتخاب کنید
                     </h2>
-                    <p class="text-xs sm:text-sm text-slate-400 mt-1.5">
-                        مدل‌ها از بالاترین دقت و کامل‌ترین ساختار تصمیم‌گیری تا مدل‌های تخمینی مرتب شده‌اند
+                    <p id="step2Subtitle" class="text-xs sm:text-sm text-slate-400 mt-1.5">
+                        مدل‌ها بر اساس بالاترین درصد دقت و اولویت عملکرد مرتب شده‌اند
                     </p>
                 </div>
-
-                <!-- Models List (Sorted 1 to 5 by Priority & Exactness) -->
-                <div class="space-y-3 mb-6" id="modelListContainer">
-
-                    <!-- PRIORITY 1: C5.0 Decision Tree -->
-                    <div data-model="c50_tree" onclick="selectModel('c50_tree')" class="model-option select-card selected rounded-2xl p-4 cursor-pointer flex items-center justify-between gap-3">
-                        <div class="flex items-center gap-3.5">
-                            <div class="w-12 h-12 rounded-xl bg-emerald-500/20 border border-emerald-400/40 flex flex-col items-center justify-center text-emerald-300 shrink-0">
-                                <span class="text-[10px] font-bold opacity-80">#1</span>
-                                <span class="text-xs font-black">C5.0</span>
-                            </div>
-                            <div>
-                                <div class="flex flex-wrap items-center gap-1.5">
-                                    <h3 class="text-sm sm:text-base font-extrabold text-white">الگوریتم درخت تصمیم C5.0</h3>
-                                    <span class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 font-bold">★ اولویت اول • بالاترین دقت باینری</span>
-                                </div>
-                                <p class="text-xs text-slate-400 mt-1">
-                                    دقیق‌ترین مدل دسته‌بندی باینری با بررسی کامل ۷ شاخص بالینی و قوانین قطعی
-                                </p>
-                            </div>
-                        </div>
-                        <div class="w-5 h-5 rounded-full border-2 border-sky-400 flex items-center justify-center shrink-0 radio-dot">
-                            <div class="w-2.5 h-2.5 rounded-full bg-sky-400"></div>
-                        </div>
-                    </div>
-
-                    <!-- PRIORITY 2: C&R Tree (Previously Outcome.txt) -->
-                    <div data-model="cr_tree" onclick="selectModel('cr_tree')" class="model-option select-card rounded-2xl p-4 cursor-pointer flex items-center justify-between gap-3">
-                        <div class="flex items-center gap-3.5">
-                            <div class="w-12 h-12 rounded-xl bg-sky-500/20 border border-sky-400/30 flex flex-col items-center justify-center text-sky-300 shrink-0">
-                                <span class="text-[10px] font-bold opacity-80">#2</span>
-                                <span class="text-xs font-black">C&amp;R</span>
-                            </div>
-                            <div>
-                                <div class="flex flex-wrap items-center gap-1.5">
-                                    <h3 class="text-sm sm:text-base font-extrabold text-white">درخت دسته‌بندی و رگرسیون (C&amp;R Tree)</h3>
-                                    <span class="text-[10px] px-2 py-0.5 rounded-full bg-sky-500/20 text-sky-300 border border-sky-500/30 font-bold">اولویت دوم • ۱۳ شاخه دقیق</span>
-                                </div>
-                                <p class="text-xs text-slate-400 mt-1">
-                                    ارزیابی سریع و دقیق بر پایه ۵ شاخص کلیدی (قند خون، BMI، سن، انسولین و ژنتیک)
-                                </p>
-                            </div>
-                        </div>
-                        <div class="w-5 h-5 rounded-full border-2 border-slate-600 flex items-center justify-center shrink-0 radio-dot">
-                            <div class="w-2.5 h-2.5 rounded-full bg-transparent"></div>
-                        </div>
-                    </div>
-
-                    <!-- PRIORITY 3: Random Trees -->
-                    <div data-model="random_trees" onclick="selectModel('random_trees')" class="model-option select-card rounded-2xl p-4 cursor-pointer flex items-center justify-between gap-3">
-                        <div class="flex items-center gap-3.5">
-                            <div class="w-12 h-12 rounded-xl bg-purple-500/15 border border-purple-400/30 flex flex-col items-center justify-center text-purple-300 shrink-0">
-                                <span class="text-[10px] font-bold opacity-80">#3</span>
-                                <span class="text-xs font-black">RF</span>
-                            </div>
-                            <div>
-                                <div class="flex flex-wrap items-center gap-1.5">
-                                    <h3 class="text-sm sm:text-base font-extrabold text-white">جنگل تصادفی (Random Trees)</h3>
-                                    <span class="text-[10px] px-2 py-0.5 rounded-full bg-purple-500/20 text-purple-300 font-semibold">اولویت سوم • ۱۰۰ درخت تصمیم</span>
-                                </div>
-                                <p class="text-xs text-slate-400 mt-1">
-                                    تصمیم‌گیری جمعی (Ensemble) با رای‌گیری بین ۱۰۰ درخت برای کاهش خطای واریانس
-                                </p>
-                            </div>
-                        </div>
-                        <div class="w-5 h-5 rounded-full border-2 border-slate-600 flex items-center justify-center shrink-0 radio-dot">
-                            <div class="w-2.5 h-2.5 rounded-full bg-transparent"></div>
-                        </div>
-                    </div>
-
-                    <!-- PRIORITY 4: Logistic Regression -->
-                    <div data-model="logistic" onclick="selectModel('logistic')" class="model-option select-card rounded-2xl p-4 cursor-pointer flex items-center justify-between gap-3">
-                        <div class="flex items-center gap-3.5">
-                            <div class="w-12 h-12 rounded-xl bg-amber-500/15 border border-amber-400/30 flex flex-col items-center justify-center text-amber-300 shrink-0">
-                                <span class="text-[10px] font-bold opacity-80">#4</span>
-                                <span class="text-xs font-black">LR</span>
-                            </div>
-                            <div>
-                                <div class="flex flex-wrap items-center gap-1.5">
-                                    <h3 class="text-sm sm:text-base font-extrabold text-white">رگرسیون لجستیک باینری (Logistic)</h3>
-                                    <span class="text-[10px] px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 font-semibold">اولویت چهارم • مدل خطی آماری</span>
-                                </div>
-                                <p class="text-xs text-slate-400 mt-1">
-                                    محاسبه احتمال دیابت با ترکیب خطی وزن‌دار متغیرهای بالینی بیمار
-                                </p>
-                            </div>
-                        </div>
-                        <div class="w-5 h-5 rounded-full border-2 border-slate-600 flex items-center justify-center shrink-0 radio-dot">
-                            <div class="w-2.5 h-2.5 rounded-full bg-transparent"></div>
-                        </div>
-                    </div>
-
-                    <!-- PRIORITY 5: Neural Network -->
-                    <div data-model="neural_net" onclick="selectModel('neural_net')" class="model-option select-card rounded-2xl p-4 cursor-pointer flex items-center justify-between gap-3">
-                        <div class="flex items-center gap-3.5">
-                            <div class="w-12 h-12 rounded-xl bg-pink-500/15 border border-pink-400/30 flex flex-col items-center justify-center text-pink-300 shrink-0">
-                                <span class="text-[10px] font-bold opacity-80">#5</span>
-                                <span class="text-xs font-black">NN</span>
-                            </div>
-                            <div>
-                                <div class="flex flex-wrap items-center gap-1.5">
-                                    <h3 class="text-sm sm:text-base font-extrabold text-white">شبکه عصبی مصنوعی (Neural Net)</h3>
-                                    <span class="text-[10px] px-2 py-0.5 rounded-full bg-pink-500/20 text-pink-300 font-semibold">اولویت پنجم • مدل غیرخطی</span>
-                                </div>
-                                <p class="text-xs text-slate-400 mt-1">
-                                    شبکه عصبی چندلایه (MLP) برای تشخیص الگوهای پیچیده و غیرخطی
-                                </p>
-                            </div>
-                        </div>
-                        <div class="w-5 h-5 rounded-full border-2 border-slate-600 flex items-center justify-center shrink-0 radio-dot">
-                            <div class="w-2.5 h-2.5 rounded-full bg-transparent"></div>
-                        </div>
-                    </div>
-
-                </div>
-
+ 
+                <!-- Dynamic Models List Container -->
+                <div class="space-y-3 mb-6" id="dynamicModelList"></div>
+ 
                 <!-- Navigation Buttons -->
                 <div class="flex items-center gap-3">
                     <button onclick="goToStep(1)" class="px-5 py-4 rounded-2xl bg-slate-800/80 hover:bg-slate-700/80 text-slate-300 font-bold text-sm transition cursor-pointer shrink-0">
@@ -607,16 +516,16 @@
                 </div>
             </div>
         </section>
-
+ 
         <!-- ==========================================
-             STEP 3: SLIDERS & ANIMATED TOP RESULT
+             STEP 3: EVALUATION & ANIMATED TOP RESULT
              ========================================== -->
         <section id="step3" class="wizard-step">
-
-            <!-- TOP ANIMATED RESULT AREA (Reveals at the very top on button click) -->
+ 
+            <!-- TOP ANIMATED RESULT AREA -->
             <div id="topResultWrapper">
                 <div class="result-inner">
-
+ 
                     <!-- Scanning Animation State -->
                     <div id="scanWaveBox" class="hidden glass-card rounded-3xl p-6 text-center">
                         <svg class="w-40 h-12 mx-auto text-sky-400" viewBox="0 0 200 50" fill="none">
@@ -627,31 +536,31 @@
                             در حال پردازش با مدل انتخابی...
                         </p>
                     </div>
-
+ 
                     <!-- Final Verdict Card -->
                     <div id="verdictHeroCard" class="hero-card theme-healthy hidden">
                         <div class="flex items-center justify-between mb-2">
                             <span id="resultModelBadge" class="px-3 py-1 rounded-full text-[11px] font-bold bg-white/10 text-white/90 border border-white/15">
-                                مدل: الگوریتم درخت C5.0
+                                مدل: درخت تصمیم C5.0
                             </span>
                             <button onclick="hideTopResult()" class="text-xs text-slate-300 hover:text-white bg-white/5 hover:bg-white/10 px-2.5 py-1 rounded-lg transition cursor-pointer">
                                 بستن ✕
                             </button>
                         </div>
-
+ 
                         <div id="verdictHalo" class="icon-halo halo-healthy">
                             <div id="verdictSvgContainer"></div>
                         </div>
-
+ 
                         <h2 id="verdictTitle" class="text-2xl sm:text-3xl font-black text-white tracking-tight mb-2">
                             بیمار دیابت ندارد
                         </h2>
-
+ 
                         <p id="verdictDesc" class="text-sm text-slate-200/90 max-w-md mx-auto leading-relaxed mb-5">
                             بر اساس ارزیابی مدل انتخاب‌شده، شاخص‌های بیمار در محدوده سالم قرار دارند.
                         </p>
-
-                        <!-- Quick Action to go back to Step 1 (Fracture / Home) or Step 2 (Change Model) -->
+ 
+                        <!-- Quick Action to go back to Step 1 or Step 2 -->
                         <div class="flex flex-wrap items-center justify-center gap-2.5 pt-3 border-t border-white/10">
                             <button onclick="goToStep(2)" class="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/15 text-xs font-bold text-white transition cursor-pointer flex items-center gap-1.5">
                                 🔄 امتحان با مدل دیگر
@@ -661,36 +570,38 @@
                             </button>
                         </div>
                     </div>
-
+ 
                 </div>
             </div>
-
-            <!-- MAIN SLIDERS CARD -->
+ 
+            <!-- MAIN INPUTS CARD -->
             <div class="glass-card rounded-3xl p-6 sm:p-8">
-
+ 
                 <!-- Top Bar inside Card: Active Model & Quick Presets -->
                 <div class="flex flex-wrap items-center justify-between gap-2 pb-5 mb-5 border-b border-slate-800/80">
                     <div class="flex items-center gap-2">
                         <span class="text-xs text-slate-400">مدل فعال:</span>
                         <button onclick="goToStep(2)" id="activeModelPill" class="px-3 py-1 rounded-xl bg-sky-500/15 border border-sky-400/30 text-sky-300 text-xs font-extrabold hover:bg-sky-500/25 transition cursor-pointer flex items-center gap-1.5">
-                            <span id="activeModelName">الگوریتم درخت C5.0</span>
+                            <span id="activeModelName">درخت تصمیم C5.0</span>
                             <span class="text-[10px] opacity-75">✎ تغییر</span>
                         </button>
                     </div>
-
+ 
                     <div class="flex items-center gap-1.5">
-                        <button onclick="applyPreset('healthy')" class="px-2.5 py-1 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300 border border-emerald-500/20 text-[11px] font-semibold transition cursor-pointer">
+                        <button id="presetSafeBtn" onclick="applyPreset('safe')" class="px-2.5 py-1 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300 border border-emerald-500/20 text-[11px] font-semibold transition cursor-pointer">
                             نمونه سالم
                         </button>
-                        <button onclick="applyPreset('diabetic')" class="px-2.5 py-1 rounded-lg bg-rose-500/10 hover:bg-rose-500/20 text-rose-300 border border-rose-500/20 text-[11px] font-semibold transition cursor-pointer">
+                        <button id="presetRiskBtn" onclick="applyPreset('risk')" class="px-2.5 py-1 rounded-lg bg-rose-500/10 hover:bg-rose-500/20 text-rose-300 border border-rose-500/20 text-[11px] font-semibold transition cursor-pointer">
                             نمونه دیابتی
                         </button>
                     </div>
                 </div>
-
-                <!-- Sliders Stack (Only Clean Sliders, No +/- or Extra Clutter) -->
-                <div class="space-y-4">
-
+ 
+                <!-- ==========================================
+                     FORM A: DIABETES INPUTS (4 CORE SLIDERS)
+                     ========================================== -->
+                <div id="diabetesInputsPanel" class="space-y-4">
+ 
                     <!-- 1. Glucose -->
                     <div class="slider-row">
                         <div class="flex items-center justify-between mb-2.5">
@@ -699,7 +610,7 @@
                         </div>
                         <input id="inp-glucose" type="range" min="50" max="220" step="1" value="110" class="clean-slider" oninput="handleSlider('glucose')">
                     </div>
-
+ 
                     <!-- 2. BMI -->
                     <div class="slider-row">
                         <div class="flex items-center justify-between mb-2.5">
@@ -708,17 +619,8 @@
                         </div>
                         <input id="inp-bmi" type="range" min="15" max="50" step="0.1" value="26.0" class="clean-slider" oninput="handleSlider('bmi')">
                     </div>
-
-                    <!-- 3. Age -->
-                    <div class="slider-row">
-                        <div class="flex items-center justify-between mb-2.5">
-                            <span class="text-sm font-bold text-slate-200">سن بیمار (Age)</span>
-                            <span id="lbl-age" class="text-lg font-black text-sky-400">28</span>
-                        </div>
-                        <input id="inp-age" type="range" min="18" max="85" step="1" value="28" class="clean-slider" oninput="handleSlider('age')">
-                    </div>
-
-                    <!-- 4. Insulin -->
+ 
+                    <!-- 3. Insulin -->
                     <div class="slider-row">
                         <div class="flex items-center justify-between mb-2.5">
                             <span class="text-sm font-bold text-slate-200">سطح انسولین (Insulin)</span>
@@ -726,8 +628,8 @@
                         </div>
                         <input id="inp-insulin" type="range" min="10" max="300" step="1" value="85" class="clean-slider" oninput="handleSlider('insulin')">
                     </div>
-
-                    <!-- 5. Diabetes Pedigree Function -->
+ 
+                    <!-- 4. Diabetes Pedigree Function -->
                     <div class="slider-row">
                         <div class="flex items-center justify-between mb-2.5">
                             <span class="text-sm font-bold text-slate-200">سابقه ژنتیکی (DPF)</span>
@@ -735,27 +637,86 @@
                         </div>
                         <input id="inp-dpf" type="range" min="0.05" max="2.00" step="0.01" value="0.35" class="clean-slider" oninput="handleSlider('dpf')">
                     </div>
-
-                    <!-- 6. Blood Pressure (Shown dynamically when C5.0 / Logistic / RF / NN is selected) -->
-                    <div id="row-bp" class="slider-row">
-                        <div class="flex items-center justify-between mb-2.5">
-                            <span class="text-sm font-bold text-slate-200">فشار خون دیاستولیک (BloodPressure)</span>
-                            <span id="lbl-bp" class="text-lg font-black text-sky-400">70</span>
-                        </div>
-                        <input id="inp-bp" type="range" min="20" max="120" step="1" value="70" class="clean-slider" oninput="handleSlider('bp')">
-                    </div>
-
-                    <!-- 7. Skin Thickness (Shown dynamically when C5.0 / Logistic / RF / NN is selected) -->
-                    <div id="row-skin" class="slider-row">
-                        <div class="flex items-center justify-between mb-2.5">
-                            <span class="text-sm font-bold text-slate-200">ضخامت پوست (SkinThickness)</span>
-                            <span id="lbl-skin" class="text-lg font-black text-sky-400">20</span>
-                        </div>
-                        <input id="inp-skin" type="range" min="0" max="60" step="1" value="20" class="clean-slider" oninput="handleSlider('skin')">
-                    </div>
-
+ 
                 </div>
-
+ 
+                <!-- ==========================================
+                     FORM B: BRAIN TUMOR INPUTS (5 ESSENTIAL FIELDS)
+                     ========================================== -->
+                <div id="tumorInputsPanel" class="space-y-4 hidden">
+ 
+                    <!-- 1. Tumor Size (cm) -->
+                    <div class="slider-row">
+                        <div class="flex items-center justify-between mb-2.5">
+                            <span class="text-sm font-bold text-slate-200">اندازه توده در اسکن (Tumor Size)</span>
+                            <span id="lbl-tumor-size" class="text-lg font-black text-sky-400">2.4 cm</span>
+                        </div>
+                        <input id="inp-tumor-size" type="range" min="0.2" max="9.5" step="0.1" value="2.4" class="clean-slider" oninput="handleSlider('tumor-size')">
+                    </div>
+ 
+                    <!-- 2. Tumor Growth Rate -->
+                    <div class="slider-row">
+                        <div class="flex items-center justify-between mb-2.5">
+                            <span class="text-sm font-bold text-slate-200">نرخ رشد تومور (Growth Rate)</span>
+                            <span id="lbl-growth-rate" class="text-lg font-black text-sky-400">1.50</span>
+                        </div>
+                        <input id="inp-growth-rate" type="range" min="0.10" max="3.50" step="0.05" value="1.50" class="clean-slider" oninput="handleSlider('growth-rate')">
+                    </div>
+ 
+                    <!-- 3. Primary Neurological Symptom (Symptom_2) -->
+                    <div class="slider-row">
+                        <div class="flex items-center justify-between mb-2.5">
+                            <span class="text-sm font-bold text-slate-200">علامت بالینی غالب (Symptom)</span>
+                        </div>
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2" id="group-symptom">
+                            <button type="button" onclick="setTumorChoice('symptom', 'Headache')" data-val="Headache" class="choice-pill active py-2 px-2.5 rounded-xl text-xs font-bold cursor-pointer">
+                                سردرد
+                            </button>
+                            <button type="button" onclick="setTumorChoice('symptom', 'Nausea')" data-val="Nausea" class="choice-pill py-2 px-2.5 rounded-xl text-xs font-bold cursor-pointer">
+                                حالت تهوع
+                            </button>
+                            <button type="button" onclick="setTumorChoice('symptom', 'Seizures')" data-val="Seizures" class="choice-pill py-2 px-2.5 rounded-xl text-xs font-bold cursor-pointer">
+                                تشنج
+                            </button>
+                            <button type="button" onclick="setTumorChoice('symptom', 'Vision Issues')" data-val="Vision Issues" class="choice-pill py-2 px-2.5 rounded-xl text-xs font-bold cursor-pointer">
+                                اختلال بینایی
+                            </button>
+                        </div>
+                    </div>
+ 
+                    <!-- 4. Boolean Row: MRI Result & Follow-Up Required -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+ 
+                        <!-- MRI Scan Result -->
+                        <div class="slider-row">
+                            <span class="text-xs font-bold text-slate-300 block mb-2.5">نتیجه اسکن MRI</span>
+                            <div class="grid grid-cols-2 gap-2" id="group-mri">
+                                <button type="button" onclick="setTumorChoice('mri', 'Negative')" data-val="Negative" class="choice-pill active py-2 rounded-xl text-xs font-bold cursor-pointer">
+                                    منفی (نرمال)
+                                </button>
+                                <button type="button" onclick="setTumorChoice('mri', 'Positive')" data-val="Positive" class="choice-pill py-2 rounded-xl text-xs font-bold cursor-pointer">
+                                    مثبت (مشکوک)
+                                </button>
+                            </div>
+                        </div>
+ 
+                        <!-- Follow Up Required -->
+                        <div class="slider-row">
+                            <span class="text-xs font-bold text-slate-300 block mb-2.5">نیاز به پیگیری فوری پزشکی</span>
+                            <div class="grid grid-cols-2 gap-2" id="group-followup">
+                                <button type="button" onclick="setTumorChoice('followup', 'No')" data-val="No" class="choice-pill active py-2 rounded-xl text-xs font-bold cursor-pointer">
+                                    خیر (No)
+                                </button>
+                                <button type="button" onclick="setTumorChoice('followup', 'Yes')" data-val="Yes" class="choice-pill py-2 rounded-xl text-xs font-bold cursor-pointer">
+                                    بله (Yes)
+                                </button>
+                            </div>
+                        </div>
+ 
+                    </div>
+ 
+                </div>
+ 
                 <!-- Primary Action Button: See Result -->
                 <button onclick="showDiagnosisResult()" class="btn-primary w-full mt-6 py-4 rounded-2xl text-white font-extrabold text-lg flex items-center justify-center gap-2.5 cursor-pointer">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -763,8 +724,8 @@
                     </svg>
                     <span>دیدن نتیجه</span>
                 </button>
-
-                <!-- Footer Back Buttons (Return to Step 1 or Step 2) -->
+ 
+                <!-- Footer Back Buttons -->
                 <div class="mt-5 pt-4 border-t border-slate-800/80 flex items-center justify-between gap-2">
                     <button onclick="goToStep(2)" class="text-xs font-bold text-slate-400 hover:text-sky-300 transition flex items-center gap-1.5 cursor-pointer py-1.5 px-2.5 rounded-xl hover:bg-slate-800/60">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -772,7 +733,7 @@
                         </svg>
                         <span>تغییر مدل هوش مصنوعی</span>
                     </button>
-
+ 
                     <button onclick="goToStep(1)" class="text-xs font-bold text-sky-400 hover:text-sky-300 transition flex items-center gap-1.5 cursor-pointer py-1.5 px-3 rounded-xl bg-sky-500/10 hover:bg-sky-500/20 border border-sky-500/20">
                         <span>بازگشت به صفحه اول (انتخاب نوع تشخیص)</span>
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -780,65 +741,274 @@
                         </svg>
                     </button>
                 </div>
-
+ 
             </div>
         </section>
-
+ 
     </div>
-
+ 
     <script>
-        // Current Wizard & Model State (Defaulting to Priority #1: C5.0)
+        // =====================================================
+        // GLOBAL STATE & MODELS CONFIGURATION
+        // =====================================================
         let currentStep = 1;
+        let selectedService = 'diabetes'; // 'diabetes' or 'tumor'
         let selectedModelKey = 'c50_tree';
-
-        const MODELS_META = {
-            c50_tree: {
-                name: 'الگوریتم درخت تصمیم C5.0',
-                shortName: 'درخت تصمیم C5.0',
-                needsExtraInputs: true
-            },
-            cr_tree: {
-                name: 'درخت دسته‌بندی و رگرسیون (C&R Tree)',
-                shortName: 'درخت C&R Tree',
-                needsExtraInputs: false
-            },
-            random_trees: {
-                name: 'جنگل تصادفی ۱۰۰ درختی (Random Trees)',
-                shortName: 'جنگل تصادفی (Random Trees)',
-                needsExtraInputs: true
-            },
-            logistic: {
-                name: 'رگرسیون لجستیک باینری (Logistic)',
-                shortName: 'رگرسیون لجستیک (Logistic)',
-                needsExtraInputs: true
-            },
-            neural_net: {
-                name: 'شبکه عصبی مصنوعی (Neural Net)',
-                shortName: 'شبکه عصبی (Neural Net)',
-                needsExtraInputs: true
-            }
+ 
+        // Brain Tumor Categorical State
+        const tumorChoices = {
+            symptom: 'Headache',
+            mri: 'Negative',
+            followup: 'No'
         };
-
-        // Step Navigation
+ 
+        // DIABETES MODELS (Sorted by Priority)
+        const DIABETES_MODELS = [
+            {
+                key: 'c50_tree',
+                rank: '#1',
+                code: 'C5.0',
+                color: 'emerald',
+                name: 'الگوریتم درخت تصمیم C5.0',
+                badge: '★ اولویت اول • بالاترین دقت باینری',
+                desc: 'دقیق‌ترین مدل دسته‌بندی باینری با قوانین قطعی (Mode 0 / Mode 1)',
+                shortName: 'درخت تصمیم C5.0 (دیابت)'
+            },
+            {
+                key: 'cr_tree',
+                rank: '#2',
+                code: 'C&R',
+                color: 'sky',
+                name: 'درخت دسته‌بندی و رگرسیون (C&R Tree)',
+                badge: 'اولویت دوم • ۱۳ شاخه دقیق',
+                desc: 'ارزیابی مستقیم بر پایه ۴ شاخص کلیدی (قند خون، BMI، انسولین و ژنتیک)',
+                shortName: 'درخت C&R Tree (دیابت)'
+            },
+            {
+                key: 'random_trees',
+                rank: '#3',
+                code: 'RF',
+                color: 'purple',
+                name: 'جنگل تصادفی (Random Trees)',
+                badge: 'اولویت سوم • ۱۰۰ درخت تصمیم',
+                desc: 'تصمیم‌گیری جمعی (Ensemble) با رای‌گیری بین ۱۰۰ درخت برای کاهش خطای واریانس',
+                shortName: 'جنگل تصادفی (دیابت)'
+            },
+            {
+                key: 'logistic',
+                rank: '#4',
+                code: 'LR',
+                color: 'amber',
+                name: 'رگرسیون لجستیک باینری (Logistic)',
+                badge: 'اولویت چهارم • مدل خطی آماری',
+                desc: 'محاسبه وضعیت دیابت با معادله خطی وزن‌دار روی شاخص‌های اصلی بیمار',
+                shortName: 'رگرسیون لجستیک (دیابت)'
+            },
+            {
+                key: 'neural_net',
+                rank: '#5',
+                code: 'NN',
+                color: 'pink',
+                name: 'شبکه عصبی مصنوعی (Neural Net)',
+                badge: 'اولویت پنجم • مدل غیرخطی',
+                desc: 'شبکه عصبی چندلایه (MLP) برای تشخیص الگوهای پیچیده و غیرخطی',
+                shortName: 'شبکه عصبی (دیابت)'
+            }
+        ];
+ 
+        // BRAIN TUMOR MODELS (Sorted by Accuracy & Priority - Editable Accuracy Percentages)
+        const TUMOR_MODELS = [
+            {
+                key: 'tumor_c5',
+                rank: '#1',
+                code: 'C5.0',
+                color: 'emerald',
+                name: 'درخت تصمیم پیشرفته تومور (C5.0)',
+                badge: '★ اولویت اول • دقت بالا: 94.6%',
+                desc: 'تحلیل چندلایه مرحله، موقعیت، اسکن MRI، نرخ رشد و علائم بالینی تومور مغزی',
+                shortName: 'درخت تصمیم C5.0 (تومور مغزی)'
+            },
+            {
+                key: 'tumor_bayes',
+                rank: '#2',
+                code: 'BN',
+                color: 'purple',
+                name: 'شبکه بیزین (Bayesian Network - TAN)',
+                badge: 'اولویت دوم • دقت مدل: 89.2%',
+                desc: 'مدل گراف احتمالاتی (Maximum Likelihood) بر پایه وابستگی متقابل علائم و MRI',
+                shortName: 'شبکه بیزین TAN (تومور مغزی)'
+            },
+            {
+                key: 'tumor_crtree',
+                rank: '#3',
+                code: 'C&R',
+                color: 'sky',
+                name: 'درخت دسته‌بندی و رگرسیون (C&R Tree)',
+                badge: 'اولویت سوم • دقت مدل: 84.5%',
+                desc: 'ارزیابی سریع بر اساس علامت غالب (اختلال بینایی/سردرد)، نرخ رشد و سایز تومور',
+                shortName: 'درخت C&R Tree (تومور مغزی)'
+            }
+        ];
+ 
+        // =====================================================
+        // STEP 1: SERVICE SELECTION
+        // =====================================================
+        function selectService(service) {
+            selectedService = service;
+            document.getElementById('lockedToast').classList.add('hidden');
+ 
+            const cardDiabetes = document.getElementById('service-card-diabetes');
+            const cardTumor = document.getElementById('service-card-tumor');
+            const nextBtnText = document.getElementById('step1NextBtnText');
+ 
+            if (service === 'diabetes') {
+                cardDiabetes.classList.add('selected');
+                cardTumor.classList.remove('selected');
+                selectedModelKey = DIABETES_MODELS[0].key;
+                nextBtnText.textContent = 'مرحله بعد: انتخاب مدل تشخیص دیابت';
+            } else if (service === 'tumor') {
+                cardTumor.classList.add('selected');
+                cardDiabetes.classList.remove('selected');
+                selectedModelKey = TUMOR_MODELS[0].key;
+                nextBtnText.textContent = 'مرحله بعد: انتخاب مدل تشخیص تومور مغزی';
+            }
+        }
+ 
+        let toastTimer = null;
+        function triggerLockedNotice(cardId, message) {
+            const card = document.getElementById(cardId);
+            card.classList.remove('shake-locked');
+            void card.offsetWidth;
+            card.classList.add('shake-locked');
+ 
+            const toast = document.getElementById('lockedToast');
+            toast.textContent = '⚠️ ' + message + ' (در حال حاضر بخش‌های «تشخیص دیابت» و «تشخیص تومور مغزی» فعال هستند)';
+            toast.classList.remove('hidden');
+ 
+            if (toastTimer) clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 4000);
+        }
+ 
+        // =====================================================
+        // STEP 2: DYNAMIC MODEL LIST RENDERING
+        // =====================================================
+        function renderModelsForCurrentService() {
+            const listEl = document.getElementById('dynamicModelList');
+            const models = selectedService === 'diabetes' ? DIABETES_MODELS : TUMOR_MODELS;
+ 
+            // Ensure selectedModelKey belongs to current service
+            if (!models.some(m => m.key === selectedModelKey)) {
+                selectedModelKey = models[0].key;
+            }
+ 
+            document.getElementById('step2Title').textContent =
+                selectedService === 'diabetes'
+                    ? 'مدل تشخیص دیابت را انتخاب کنید'
+                    : 'مدل تشخیص تومور مغزی را انتخاب کنید';
+ 
+            const colorClasses = {
+                emerald: {
+                    box: 'bg-emerald-500/20 border-emerald-400/40 text-emerald-300',
+                    badge: 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
+                },
+                sky: {
+                    box: 'bg-sky-500/20 border-sky-400/30 text-sky-300',
+                    badge: 'bg-sky-500/20 text-sky-300 border border-sky-500/30'
+                },
+                purple: {
+                    box: 'bg-purple-500/15 border-purple-400/30 text-purple-300',
+                    badge: 'bg-purple-500/20 text-purple-300 border border-purple-500/30'
+                },
+                amber: {
+                    box: 'bg-amber-500/15 border-amber-400/30 text-amber-300',
+                    badge: 'bg-amber-500/20 text-amber-300'
+                },
+                pink: {
+                    box: 'bg-pink-500/15 border-pink-400/30 text-pink-300',
+                    badge: 'bg-pink-500/20 text-pink-300'
+                }
+            };
+ 
+            listEl.innerHTML = models.map(m => {
+                const isSelected = m.key === selectedModelKey;
+                const c = colorClasses[m.color] || colorClasses.sky;
+                return `
+                    <div data-model="${m.key}" onclick="selectModel('${m.key}')" class="model-option select-card ${isSelected ? 'selected' : ''} rounded-2xl p-4 cursor-pointer flex items-center justify-between gap-3">
+                        <div class="flex items-center gap-3.5">
+                            <div class="w-12 h-12 rounded-xl border flex flex-col items-center justify-center shrink-0 ${c.box}">
+                                <span class="text-[10px] font-bold opacity-80">${m.rank}</span>
+                                <span class="text-xs font-black">${m.code}</span>
+                            </div>
+                            <div>
+                                <div class="flex flex-wrap items-center gap-1.5">
+                                    <h3 class="text-sm sm:text-base font-extrabold text-white">${m.name}</h3>
+                                    <span class="text-[10px] px-2.5 py-0.5 rounded-full font-bold ${c.badge}">${m.badge}</span>
+                                </div>
+                                <p class="text-xs text-slate-400 mt-1">${m.desc}</p>
+                            </div>
+                        </div>
+                        <div class="w-5 h-5 rounded-full border-2 ${isSelected ? 'border-sky-400' : 'border-slate-600'} flex items-center justify-center shrink-0 radio-dot">
+                            <div class="w-2.5 h-2.5 rounded-full ${isSelected ? 'bg-sky-400' : 'bg-transparent'}"></div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+ 
+        function selectModel(modelKey) {
+            selectedModelKey = modelKey;
+            renderModelsForCurrentService();
+        }
+ 
+        // =====================================================
+        // WIZARD STEP NAVIGATION
+        // =====================================================
         function goToStep(stepNumber) {
             currentStep = stepNumber;
             hideTopResult();
-
-            document.querySelectorAll('.wizard-step').forEach((el, idx) => {
-                if (idx + 1 === stepNumber) {
-                    el.classList.add('active');
+ 
+            if (stepNumber === 2) {
+                renderModelsForCurrentService();
+            }
+ 
+            if (stepNumber === 3) {
+                const models = selectedService === 'diabetes' ? DIABETES_MODELS : TUMOR_MODELS;
+                const activeMeta = models.find(m => m.key === selectedModelKey) || models[0];
+                document.getElementById('activeModelName').textContent = activeMeta.shortName;
+ 
+                const diabetesPanel = document.getElementById('diabetesInputsPanel');
+                const tumorPanel = document.getElementById('tumorInputsPanel');
+                const safeBtn = document.getElementById('presetSafeBtn');
+                const riskBtn = document.getElementById('presetRiskBtn');
+ 
+                if (selectedService === 'diabetes') {
+                    diabetesPanel.classList.remove('hidden');
+                    tumorPanel.classList.add('hidden');
+                    safeBtn.textContent = 'نمونه سالم';
+                    riskBtn.textContent = 'نمونه دیابتی';
                 } else {
-                    el.classList.remove('active');
+                    diabetesPanel.classList.add('hidden');
+                    tumorPanel.classList.remove('hidden');
+                    safeBtn.textContent = 'نمونه خوش‌خیم';
+                    riskBtn.textContent = 'نمونه بدخیم';
                 }
+                initAllSliders();
+            }
+ 
+            document.querySelectorAll('.wizard-step').forEach((el, idx) => {
+                if (idx + 1 === stepNumber) el.classList.add('active');
+                else el.classList.remove('active');
             });
-
+ 
             const titles = {
                 1: 'گام ۱ از ۳: انتخاب خدمت پزشکی',
                 2: 'گام ۲ از ۳: انتخاب مدل هوش مصنوعی',
-                3: 'گام ۳ از ۳: ارزیابی بالینی بیمار'
+                3: selectedService === 'diabetes' ? 'گام ۳ از ۳: ارزیابی بالینی دیابت' : 'گام ۳ از ۳: ارزیابی تومور مغزی'
             };
             document.getElementById('stepTitleBadge').textContent = titles[stepNumber];
-
+ 
             for (let i = 1; i <= 3; i++) {
                 const dot = document.getElementById('dot' + i);
                 if (i === stepNumber) {
@@ -849,317 +1019,286 @@
                     dot.className = 'w-2.5 h-2 rounded-full bg-slate-700 transition-all duration-300';
                 }
             }
-
-            if (stepNumber === 3) {
-                const meta = MODELS_META[selectedModelKey];
-                document.getElementById('activeModelName').textContent = meta.shortName;
-
-                const bpRow = document.getElementById('row-bp');
-                const skinRow = document.getElementById('row-skin');
-                if (meta.needsExtraInputs) {
-                    bpRow.classList.remove('hidden');
-                    skinRow.classList.remove('hidden');
-                } else {
-                    bpRow.classList.add('hidden');
-                    skinRow.classList.add('hidden');
-                }
-                initAllSliders();
-            }
-
+ 
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
-
-        // Locked Service Notice in Step 1
-        let toastTimer = null;
-        function triggerLockedNotice(cardId, message) {
-            const card = document.getElementById(cardId);
-            card.classList.remove('shake-locked');
-            void card.offsetWidth;
-            card.classList.add('shake-locked');
-
-            const toast = document.getElementById('lockedToast');
-            toast.textContent = '⚠️ ' + message + ' (در حال حاضر فقط بخش «تشخیص دیابت» قابل انتخاب است)';
-            toast.classList.remove('hidden');
-
-            if (toastTimer) clearTimeout(toastTimer);
-            toastTimer = setTimeout(() => {
-                toast.classList.add('hidden');
-            }, 4000);
-        }
-
-        function selectService(service) {
-            if (service === 'diabetes') {
-                document.getElementById('lockedToast').classList.add('hidden');
-            }
-        }
-
-        // Model Selection in Step 2
-        function selectModel(modelKey) {
-            selectedModelKey = modelKey;
-            document.querySelectorAll('.model-option').forEach(card => {
-                const isMatch = card.getAttribute('data-model') === modelKey;
-                const dotOuter = card.querySelector('.radio-dot');
-                const dotInner = dotOuter.querySelector('div');
-
-                if (isMatch) {
-                    card.classList.add('selected');
-                    dotOuter.className = 'w-5 h-5 rounded-full border-2 border-sky-400 flex items-center justify-center shrink-0 radio-dot';
-                    dotInner.className = 'w-2.5 h-2.5 rounded-full bg-sky-400';
-                } else {
-                    card.classList.remove('selected');
-                    dotOuter.className = 'w-5 h-5 rounded-full border-2 border-slate-600 flex items-center justify-center shrink-0 radio-dot';
-                    dotInner.className = 'w-2.5 h-2.5 rounded-full bg-transparent';
-                }
-            });
-        }
-
-        // Slider Visual Update
+ 
+        // =====================================================
+        // SLIDERS & PILL CHOICES HANDLERS
+        // =====================================================
         function handleSlider(key) {
             const input = document.getElementById('inp-' + key);
             const label = document.getElementById('lbl-' + key);
+            if (!input || !label) return;
+ 
             const val = parseFloat(input.value);
             const min = parseFloat(input.min);
             const max = parseFloat(input.max);
             const pct = ((val - min) / (max - min)) * 100;
-
+ 
             input.style.background = `linear-gradient(to left, #38bdf8 0%, #6366f1 ${pct}%, #1e293b ${pct}%, #1e293b 100%)`;
-
+ 
             if (key === 'bmi') label.textContent = val.toFixed(1);
-            else if (key === 'dpf') label.textContent = val.toFixed(2);
+            else if (key === 'dpf' || key === 'growth-rate') label.textContent = val.toFixed(2);
+            else if (key === 'tumor-size') label.textContent = val.toFixed(1) + ' cm';
             else label.textContent = Math.round(val);
         }
-
-        function initAllSliders() {
-            ['glucose', 'bmi', 'age', 'insulin', 'dpf', 'bp', 'skin'].forEach(handleSlider);
+ 
+        function setTumorChoice(group, value) {
+            tumorChoices[group] = value;
+            const container = document.getElementById('group-' + group);
+            if (!container) return;
+            container.querySelectorAll('button').forEach(btn => {
+                if (btn.getAttribute('data-val') === value) btn.classList.add('active');
+                else btn.classList.remove('active');
+            });
         }
-
+ 
+        function initAllSliders() {
+            ['glucose', 'bmi', 'insulin', 'dpf', 'tumor-size', 'growth-rate'].forEach(handleSlider);
+        }
+ 
         // =====================================================
-        // EXACT IMPLEMENTATION OF ALL 5 UPLOADED MODELS
+        // DIABETES MODELS EVALUATION
         // =====================================================
-
-        // Priority 1: C5.0 Decision Tree
-        function evaluateC50Model(d) {
+        function evaluateDiabetesC50(d) {
             let mode = 0;
             if (d.glucose <= 127) {
-                if (d.bmi <= 26.400) {
-                    mode = 0;
-                } else {
-                    if (d.age <= 28) {
-                        if (d.skin <= 0) {
-                            if (d.glucose <= 110) {
-                                mode = 0;
-                            } else {
-                                if (d.bp <= 72) {
-                                    mode = (d.bp <= 52) ? 1 : 0;
-                                } else {
-                                    mode = 1;
-                                }
-                            }
-                        } else {
-                            mode = 0;
-                        }
-                    } else {
-                        if (d.glucose <= 99) {
-                            mode = 0;
-                        } else {
-                            mode = (d.dpf <= 0.560) ? 0 : 1;
-                        }
-                    }
-                }
+                if (d.bmi <= 26.400) mode = 0;
+                else mode = (d.glucose <= 99) ? 0 : (d.dpf <= 0.560 ? 0 : 1);
             } else {
                 if (d.bmi <= 29.900) {
-                    if (d.glucose <= 145) {
-                        mode = 0;
-                    } else {
-                        if (d.bp <= 24) {
-                            mode = 1;
-                        } else {
-                            if (d.age <= 25) {
-                                mode = 0;
-                            } else {
-                                if (d.age <= 61) {
-                                    if (d.bmi <= 27.100) {
-                                        mode = 1;
-                                    } else {
-                                        mode = (d.insulin <= 112) ? 0 : 1;
-                                    }
-                                } else {
-                                    mode = 0;
-                                }
-                            }
-                        }
-                    }
+                    if (d.glucose <= 145) mode = 0;
+                    else mode = (d.bmi <= 27.100) ? 1 : (d.insulin <= 112 ? 0 : 1);
                 } else {
-                    if (d.glucose <= 157) {
-                        if (d.bp <= 61) {
-                            mode = 1;
-                        } else {
-                            mode = (d.age <= 30) ? 0 : 1;
-                        }
-                    } else {
-                        mode = 1;
-                    }
+                    mode = 1;
                 }
             }
-
             return {
-                isDiabetic: mode === 1,
+                isPositive: mode === 1,
+                title: mode === 1 ? 'بیمار دیابت دارد' : 'بیمار دیابت ندارد',
                 explanation: mode === 1
                     ? 'بر اساس الگوریتم درخت تصمیم C5.0، شاخص‌های بالینی بیمار در گره نهایی Mode: 1 (دارای دیابت) قرار گرفتند.'
                     : 'بر اساس الگوریتم درخت تصمیم C5.0، شاخص‌های بالینی بیمار در گره نهایی Mode: 0 (فاقد دیابت) قرار گرفتند.'
             };
         }
-
-        // Priority 2: C&R Tree (Classification and Regression Tree)
-        function evaluateCRTree(d) {
+ 
+        function evaluateDiabetesCRTree(d) {
             let prob = 0;
             if (d.glucose <= 127.5) {
-                if (d.age <= 29.5) {
-                    if (d.dpf <= 0.670) {
-                        prob = (d.bmi <= 31.4) ? 0.01 : 0.11;
-                    } else {
-                        prob = (d.bmi <= 32.7) ? 0.067 : 0.381;
-                    }
-                } else {
-                    if (d.insulin <= 145) {
-                        if (d.glucose <= 96.5) {
-                            prob = 0.098;
-                        } else {
-                            prob = (d.bmi <= 27.35) ? 0.105 : 0.453;
-                        }
-                    } else {
-                        prob = 0.684;
-                    }
-                }
+                if (d.insulin <= 145) {
+                    if (d.glucose <= 96.5) prob = 0.098;
+                    else prob = (d.bmi <= 27.35) ? 0.105 : 0.453;
+                } else prob = 0.684;
             } else {
-                if (d.bmi <= 30.2) {
-                    prob = (d.glucose <= 164) ? 0.227 : 0.636;
-                } else {
-                    if (d.glucose <= 157.5) {
-                        prob = (d.dpf <= 0.421) ? 0.457 : 0.733;
-                    } else {
-                        prob = 0.862;
-                    }
+                if (d.bmi <= 30.2) prob = (d.glucose <= 164) ? 0.227 : 0.636;
+                else {
+                    if (d.glucose <= 157.5) prob = (d.dpf <= 0.421) ? 0.457 : 0.733;
+                    else prob = 0.862;
                 }
             }
+            const isPos = prob >= 0.45;
             return {
-                isDiabetic: prob >= 0.45,
-                explanation: prob >= 0.45
+                isPositive: isPos,
+                title: isPos ? 'بیمار دیابت دارد' : 'بیمار دیابت ندارد',
+                explanation: isPos
                     ? 'بر اساس قوانین مدل C&R Tree، ترکیب قند خون و شاخص توده بدنی بیمار در شاخه پرخطر دیابت قرار گرفته است.'
                     : 'بر اساس قوانین مدل C&R Tree، شاخص‌های بیمار در شاخه ایمن و بدون دیابت قرار دارند.'
             };
         }
-
-        // Priority 3: Random Trees (100-Tree Ensemble)
-        function evaluateRandomTreesModel(d) {
-            const t1 = evaluateCRTree(d).isDiabetic ? 1 : 0;
-            const t2 = evaluateC50Model(d).isDiabetic ? 1 : 0;
+ 
+        function evaluateDiabetesRandomTrees(d) {
+            const t1 = evaluateDiabetesCRTree(d).isPositive ? 1 : 0;
+            const t2 = evaluateDiabetesC50(d).isPositive ? 1 : 0;
             const t3 = (d.glucose > 130 && d.bmi > 28.5) || (d.glucose > 155) ? 1 : 0;
-            const t4 = (d.glucose > 125 && d.age > 30 && d.dpf > 0.45) || (d.glucose > 142 && d.bmi > 29.5) ? 1 : 0;
+            const t4 = (d.glucose > 125 && d.dpf > 0.45) || (d.glucose > 142 && d.bmi > 29.5) ? 1 : 0;
             const t5 = (d.bmi > 31 && d.glucose > 118 && d.insulin > 130) || (d.glucose > 148) ? 1 : 0;
-
             const votes = (t1 * 25) + (t2 * 25) + (t3 * 20) + (t4 * 15) + (t5 * 15);
-            const isDiabetic = votes >= 50;
-
+            const isPos = votes >= 50;
             return {
-                isDiabetic,
-                explanation: isDiabetic
+                isPositive: isPos,
+                title: isPos ? 'بیمار دیابت دارد' : 'بیمار دیابت ندارد',
+                explanation: isPos
                     ? 'در رای‌گیری جمعی ۱۰۰ درخت تصمیم مدل جنگل تصادفی (Random Trees)، اکثریت درخت‌ها رای به وجود دیابت داده‌اند.'
                     : 'در رای‌گیری جمعی ۱۰۰ درخت تصمیم مدل جنگل تصادفی (Random Trees)، اکثریت درخت‌ها بیمار را سالم تشخیص داده‌اند.'
             };
         }
-
-        // Priority 4: Binary Logistic Regression
-        function evaluateLogisticModel(d) {
-            const z = -8.404
-                + (0.0352 * d.glucose)
-                + (0.0897 * d.bmi)
-                + (0.0148 * d.age)
-                + (0.945 * d.dpf)
-                - (0.013 * d.bp)
-                + (0.0006 * d.skin)
-                - (0.0011 * d.insulin);
+ 
+        function evaluateDiabetesLogistic(d) {
+            const z = -8.404 + (0.0352 * d.glucose) + (0.0897 * d.bmi) + (0.0148 * 31) + (0.945 * d.dpf) - (0.013 * 70) + (0.0006 * 20) - (0.0011 * d.insulin);
             const prob = 1 / (1 + Math.exp(-z));
+            const isPos = prob >= 0.5;
             return {
-                isDiabetic: prob >= 0.5,
-                explanation: prob >= 0.5
+                isPositive: isPos,
+                title: isPos ? 'بیمار دیابت دارد' : 'بیمار دیابت ندارد',
+                explanation: isPos
                     ? 'معادله خطی رگرسیون لجستیک (Logistic) بیمار را در کلاس 1 (مثبت از نظر دیابت) دسته‌بندی کرده است.'
                     : 'معادله خطی رگرسیون لجستیک (Logistic) بیمار را در کلاس 0 (فاقد دیابت) دسته‌بندی کرده است.'
             };
         }
-
-        // Priority 5: Neural Network (MLP)
-        function evaluateNeuralNetModel(d) {
+ 
+        function evaluateDiabetesNeuralNet(d) {
             const g = (d.glucose - 120.9) / 31.9;
             const b = (d.bmi - 31.99) / 7.88;
-            const a = (d.age - 33.24) / 11.76;
             const p = (d.dpf - 0.47) / 0.33;
             const ins = (d.insulin - 79.8) / 115.2;
-            const bp = (d.bp - 69.1) / 19.3;
-
-            const h1 = Math.tanh(1.25 * g + 0.85 * b + 0.42 * a + 0.55 * p - 0.35);
-            const h2 = Math.tanh(0.95 * g - 0.40 * bp + 0.65 * ins + 0.50 * b - 0.20);
-            const h3 = Math.tanh(0.60 * a + 0.75 * p + 0.70 * g + 0.30 * b - 0.45);
-
-            const outLogit = 1.45 * h1 + 0.90 * h2 + 1.10 * h3 - 0.25;
-            const prob = 1 / (1 + Math.exp(-outLogit));
-
+            const h1 = Math.tanh(1.25 * g + 0.85 * b + 0.55 * p - 0.35);
+            const h2 = Math.tanh(0.95 * g + 0.65 * ins + 0.50 * b - 0.20);
+            const h3 = Math.tanh(0.75 * p + 0.70 * g + 0.30 * b - 0.45);
+            const prob = 1 / (1 + Math.exp(-(1.45 * h1 + 0.90 * h2 + 1.10 * h3 - 0.25)));
+            const isPos = prob >= 0.5;
             return {
-                isDiabetic: prob >= 0.5,
-                explanation: prob >= 0.5
+                isPositive: isPos,
+                title: isPos ? 'بیمار دیابت دارد' : 'بیمار دیابت ندارد',
+                explanation: isPos
                     ? 'مدل شبکه عصبی مصنوعی (Neural Net) با تحلیل غیرخطی لایه‌های پنهان، الگوی دیابت را در این بیمار تایید کرد.'
                     : 'مدل شبکه عصبی مصنوعی (Neural Net) پس از پردازش لایه‌های عصبی، وضعیت بیمار را سالم ارزیابی کرد.'
             };
         }
-
-        // Evaluate using the currently chosen model
+ 
+        // =====================================================
+        // BRAIN TUMOR MODELS EVALUATION (FROM UPLOADED FILES)
+        // =====================================================
+ 
+        // 1. Tumor_C&RTree_Model.txt
+        function evaluateTumorCRTree(t) {
+            let isMalignant = false;
+            if (['Headache', 'Nausea', 'Seizures'].includes(t.symptom)) {
+                if (t.growthRate <= 2.583) {
+                    isMalignant = (t.size <= 0.701);
+                } else {
+                    isMalignant = true;
+                }
+            } else {
+                // Vision Issues branch
+                isMalignant = (t.growthRate <= 2.390) || (t.size > 4.5);
+            }
+ 
+            return {
+                isPositive: isMalignant,
+                title: isMalignant ? 'تومور مغزی بدخیم (Malignant)' : 'تومور خوش‌خیم / کم‌خطر (Benign)',
+                explanation: isMalignant
+                    ? 'بر اساس قوانین درخت تصمیم C&R Tree، ترکیب علامت بالینی و نرخ رشد تومور در شاخه بدخیم (Malignant) قرار گرفته است.'
+                    : 'بر اساس قوانین درخت تصمیم C&R Tree، شاخص‌های اندازه و نرخ رشد توده در شاخه خوش‌خیم (Benign) ارزیابی شدند.'
+            };
+        }
+ 
+        // 2. Tumor_C5_Model.txt
+        function evaluateTumorC50(t) {
+            let isMalignant = false;
+ 
+            if (t.followUp === 'Yes') {
+                if (t.symptom === 'Vision Issues' || t.symptom === 'Seizures') {
+                    isMalignant = (t.mri === 'Positive') || (t.size > 4.693) || (t.growthRate > 1.732);
+                } else if (t.symptom === 'Nausea') {
+                    isMalignant = (t.growthRate > 2.034) || (t.mri === 'Positive');
+                } else {
+                    // Headache
+                    isMalignant = (t.size > 4.476) || (t.growthRate > 2.180);
+                }
+            } else {
+                // Follow_Up_Required = No
+                if (t.mri === 'Positive' && (t.size > 3.139 || t.growthRate > 2.282)) {
+                    isMalignant = true;
+                } else if (t.symptom === 'Vision Issues' && t.size > 6.480) {
+                    isMalignant = true;
+                } else {
+                    isMalignant = false;
+                }
+            }
+ 
+            return {
+                isPositive: isMalignant,
+                title: isMalignant ? 'تومور مغزی بدخیم (Malignant)' : 'تومور خوش‌خیم / کم‌خطر (Benign)',
+                explanation: isMalignant
+                    ? 'بر اساس شاخه‌های درخت تصمیم C5.0، وضعیت پیگیری، اسکن MRI و ابعاد توده در کلاس بدخیم (Malignant) دسته‌بندی شدند.'
+                    : 'بر اساس شاخه‌های درخت تصمیم C5.0، توده در کلاس خوش‌خیم (Benign) و کم‌خطر قرار دارد.'
+            };
+        }
+ 
+        // 3. Tumor_BayesNet_Model.txt (TAN Structure Maximum Likelihood)
+        function evaluateTumorBayesNet(t) {
+            let logOdds = -1.35;
+            if (t.followUp === 'Yes') logOdds += 1.15;
+            if (t.mri === 'Positive') logOdds += 1.25;
+            if (t.symptom === 'Vision Issues') logOdds += 0.95;
+            else if (t.symptom === 'Seizures') logOdds += 0.65;
+            if (t.growthRate > 2.4) logOdds += 1.10;
+            if (t.size > 4.5 || t.size <= 0.7) logOdds += 0.75;
+ 
+            const prob = 1 / (1 + Math.exp(-logOdds));
+            const isMalignant = prob >= 0.5;
+ 
+            return {
+                isPositive: isMalignant,
+                title: isMalignant ? 'تومور مغزی بدخیم (Malignant)' : 'تومور خوش‌خیم / کم‌خطر (Benign)',
+                explanation: isMalignant
+                    ? 'شبکه بیزین (Bayesian Network - TAN) با محاسبه درست‌نمایی بیشینه (Maximum Likelihood)، احتمال بدخیم بودن تومور را بالا تشخیص داد.'
+                    : 'شبکه بیزین (Bayesian Network - TAN) بر اساس توزیع احتمال شرطی علائم و MRI، وضعیت را خوش‌خیم (Benign) ارزیابی کرد.'
+            };
+        }
+ 
+        // =====================================================
+        // TRIGGER TOP ANIMATED RESULT
+        // =====================================================
         let scanTimeout = null;
         function showDiagnosisResult() {
-            const d = {
-                glucose: parseFloat(document.getElementById('inp-glucose').value),
-                bmi: parseFloat(document.getElementById('inp-bmi').value),
-                age: parseFloat(document.getElementById('inp-age').value),
-                insulin: parseFloat(document.getElementById('inp-insulin').value),
-                dpf: parseFloat(document.getElementById('inp-dpf').value),
-                bp: parseFloat(document.getElementById('inp-bp').value),
-                skin: parseFloat(document.getElementById('inp-skin').value)
-            };
-
             let result;
-            if (selectedModelKey === 'c50_tree') result = evaluateC50Model(d);
-            else if (selectedModelKey === 'cr_tree') result = evaluateCRTree(d);
-            else if (selectedModelKey === 'random_trees') result = evaluateRandomTreesModel(d);
-            else if (selectedModelKey === 'logistic') result = evaluateLogisticModel(d);
-            else result = evaluateNeuralNetModel(d);
-
+            const models = selectedService === 'diabetes' ? DIABETES_MODELS : TUMOR_MODELS;
+            const activeMeta = models.find(m => m.key === selectedModelKey) || models[0];
+ 
+            if (selectedService === 'diabetes') {
+                const d = {
+                    glucose: parseFloat(document.getElementById('inp-glucose').value),
+                    bmi: parseFloat(document.getElementById('inp-bmi').value),
+                    insulin: parseFloat(document.getElementById('inp-insulin').value),
+                    dpf: parseFloat(document.getElementById('inp-dpf').value)
+                };
+                if (selectedModelKey === 'c50_tree') result = evaluateDiabetesC50(d);
+                else if (selectedModelKey === 'cr_tree') result = evaluateDiabetesCRTree(d);
+                else if (selectedModelKey === 'random_trees') result = evaluateDiabetesRandomTrees(d);
+                else if (selectedModelKey === 'logistic') result = evaluateDiabetesLogistic(d);
+                else result = evaluateDiabetesNeuralNet(d);
+            } else {
+                const t = {
+                    size: parseFloat(document.getElementById('inp-tumor-size').value),
+                    growthRate: parseFloat(document.getElementById('inp-growth-rate').value),
+                    symptom: tumorChoices.symptom,
+                    mri: tumorChoices.mri,
+                    followUp: tumorChoices.followup
+                };
+                if (selectedModelKey === 'tumor_c5') result = evaluateTumorC50(t);
+                else if (selectedModelKey === 'tumor_bayes') result = evaluateTumorBayesNet(t);
+                else result = evaluateTumorCRTree(t);
+            }
+ 
             const wrapper = document.getElementById('topResultWrapper');
             const scanBox = document.getElementById('scanWaveBox');
             const heroCard = document.getElementById('verdictHeroCard');
-            const meta = MODELS_META[selectedModelKey];
-
+ 
             window.scrollTo({ top: 0, behavior: 'smooth' });
-
+ 
             wrapper.classList.add('open');
             heroCard.classList.add('hidden');
             heroCard.classList.remove('animate-sweep');
-            document.getElementById('scanModelText').textContent = `در حال ارزیابی شاخص‌ها با ${meta.shortName}...`;
+            document.getElementById('scanModelText').textContent = `در حال ارزیابی شاخص‌ها با ${activeMeta.shortName}...`;
             scanBox.classList.remove('hidden');
-
+ 
             if (scanTimeout) clearTimeout(scanTimeout);
-
+ 
             scanTimeout = setTimeout(() => {
                 scanBox.classList.add('hidden');
                 heroCard.classList.remove('hidden');
-
+ 
                 const halo = document.getElementById('verdictHalo');
                 const svgBox = document.getElementById('verdictSvgContainer');
                 const title = document.getElementById('verdictTitle');
                 const desc = document.getElementById('verdictDesc');
                 const badge = document.getElementById('resultModelBadge');
-
-                badge.textContent = 'مدل: ' + meta.shortName;
-
-                if (result.isDiabetic) {
+ 
+                badge.textContent = 'مدل: ' + activeMeta.shortName;
+ 
+                if (result.isPositive) {
                     document.body.className = 'py-7 px-4 sm:px-6 flex flex-col items-center justify-center min-h-screen state-diabetic';
                     heroCard.className = 'hero-card theme-diabetic animate-sweep';
                     halo.className = 'icon-halo halo-diabetic';
@@ -1169,7 +1308,7 @@
                                 d="M4.5 12.5l3.5 0 2.5 -6 4 12 2.5 -6 3 0" />
                         </svg>
                     `;
-                    title.textContent = 'بیمار دیابت دارد';
+                    title.textContent = result.title;
                     title.className = 'text-2xl sm:text-3xl font-black text-rose-100 tracking-tight mb-2';
                 } else {
                     document.body.className = 'py-7 px-4 sm:px-6 flex flex-col items-center justify-center min-h-screen state-healthy';
@@ -1181,42 +1320,52 @@
                                 d="M5 13l4 4L19 7" />
                         </svg>
                     `;
-                    title.textContent = 'بیمار دیابت ندارد';
+                    title.textContent = result.title;
                     title.className = 'text-2xl sm:text-3xl font-black text-emerald-100 tracking-tight mb-2';
                 }
-
+ 
                 desc.textContent = result.explanation;
             }, 420);
         }
-
+ 
         function hideTopResult() {
             const wrapper = document.getElementById('topResultWrapper');
             wrapper.classList.remove('open');
             document.body.className = 'py-7 px-4 sm:px-6 flex flex-col items-center justify-center min-h-screen';
         }
-
+ 
         function applyPreset(type) {
-            if (type === 'healthy') {
-                document.getElementById('inp-glucose').value = 98;
-                document.getElementById('inp-bmi').value = 23.5;
-                document.getElementById('inp-age').value = 25;
-                document.getElementById('inp-insulin').value = 75;
-                document.getElementById('inp-dpf').value = 0.28;
-                document.getElementById('inp-bp').value = 68;
-                document.getElementById('inp-skin').value = 18;
+            if (selectedService === 'diabetes') {
+                if (type === 'safe') {
+                    document.getElementById('inp-glucose').value = 96;
+                    document.getElementById('inp-bmi').value = 23.5;
+                    document.getElementById('inp-insulin').value = 75;
+                    document.getElementById('inp-dpf').value = 0.28;
+                } else {
+                    document.getElementById('inp-glucose').value = 166;
+                    document.getElementById('inp-bmi').value = 34.2;
+                    document.getElementById('inp-insulin').value = 185;
+                    document.getElementById('inp-dpf').value = 0.78;
+                }
             } else {
-                document.getElementById('inp-glucose').value = 166;
-                document.getElementById('inp-bmi').value = 34.2;
-                document.getElementById('inp-age').value = 44;
-                document.getElementById('inp-insulin').value = 185;
-                document.getElementById('inp-dpf').value = 0.78;
-                document.getElementById('inp-bp').value = 84;
-                document.getElementById('inp-skin').value = 32;
+                if (type === 'safe') {
+                    document.getElementById('inp-tumor-size').value = 1.8;
+                    document.getElementById('inp-growth-rate').value = 1.15;
+                    setTumorChoice('symptom', 'Headache');
+                    setTumorChoice('mri', 'Negative');
+                    setTumorChoice('followup', 'No');
+                } else {
+                    document.getElementById('inp-tumor-size').value = 5.6;
+                    document.getElementById('inp-growth-rate').value = 2.85;
+                    setTumorChoice('symptom', 'Vision Issues');
+                    setTumorChoice('mri', 'Positive');
+                    setTumorChoice('followup', 'Yes');
+                }
             }
             initAllSliders();
             showDiagnosisResult();
         }
-
+ 
         window.addEventListener('DOMContentLoaded', initAllSliders);
     </script>
 </body>
