@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>سامانه جامع تشخیص پزشکی هوشمند | NeuroMed AI</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- TensorFlow.js & Teachable Machine Image Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
     <style>
         * {
@@ -122,7 +125,7 @@
             filter: grayscale(0.35);
         }
  
-        /* Shake animation when clicking locked service */
+        /* Shake animation when clicking locked item */
         @keyframes lockedShake {
             0%, 100% { transform: translateX(0); }
             25% { transform: translateX(-5px); }
@@ -178,14 +181,14 @@
             transform: scale(1.06);
         }
  
-        /* Pill Option Buttons for Boolean / Categorical Tumor Fields */
+        /* Pill Option Buttons */
         .choice-pill {
             background: rgba(15, 23, 42, 0.65);
             border: 1px solid rgba(255, 255, 255, 0.08);
             color: #94a3b8;
             transition: all 0.2s ease;
         }
-        .choice-pill:hover {
+        .choice-pill:not(.locked-pill):hover {
             color: #e2e8f0;
             border-color: rgba(56, 189, 248, 0.3);
         }
@@ -194,6 +197,12 @@
             border-color: #38bdf8;
             color: #ffffff;
             box-shadow: 0 4px 12px rgba(14, 165, 233, 0.25);
+        }
+        .choice-pill.locked-pill {
+            opacity: 0.45;
+            cursor: not-allowed;
+            background: rgba(15, 23, 42, 0.4);
+            border-color: rgba(255, 255, 255, 0.04);
         }
  
         /* Top Hero Result Container */
@@ -318,18 +327,72 @@
             to { stroke-dashoffset: 0; }
         }
  
+        /* X-Ray Upload & Laser Scan Animation */
+        .xray-dropzone {
+            border: 2px dashed rgba(56, 189, 248, 0.35);
+            background: rgba(15, 23, 42, 0.55);
+            transition: all 0.3s ease;
+        }
+        .xray-dropzone:hover, .xray-dropzone.dragover {
+            border-color: #38bdf8;
+            background: rgba(14, 165, 233, 0.08);
+        }
+
+        /* Laser beam that scans up and down ONLY when triggered */
+        .laser-line {
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, #38bdf8, #a855f7, #38bdf8, transparent);
+            box-shadow: 0 0 22px 6px rgba(56, 189, 248, 0.85);
+            z-index: 20;
+            animation: laserScan 0.95s ease-in-out infinite alternate;
+            pointer-events: none;
+        }
+        @keyframes laserScan {
+            0% { top: 4%; }
+            100% { top: 94%; }
+        }
+
+        /* Subtle grid overlay during active laser scan */
+        .scan-grid-overlay {
+            background-image: 
+                linear-gradient(to right, rgba(56, 189, 248, 0.12) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(56, 189, 248, 0.12) 1px, transparent 1px);
+            background-size: 24px 24px;
+            animation: pulseGrid 1.2s ease-in-out infinite alternate;
+        }
+        @keyframes pulseGrid {
+            0% { opacity: 0.35; }
+            100% { opacity: 0.85; }
+        }
+
+        /* Smooth image reveal after upload finishes */
+        .image-pop-in {
+            animation: imgPop 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        @keyframes imgPop {
+            0% { opacity: 0; transform: scale(0.94); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
         /* Primary CTA Button */
         .btn-primary {
             background: linear-gradient(135deg, #0ea5e9 0%, #6366f1 100%);
             box-shadow: 0 12px 30px -6px rgba(14, 165, 233, 0.45);
             transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        .btn-primary:hover {
+        .btn-primary:hover:not(:disabled) {
             transform: translateY(-2px);
             box-shadow: 0 18px 36px -6px rgba(99, 102, 241, 0.65);
         }
-        .btn-primary:active {
+        .btn-primary:active:not(:disabled) {
             transform: translateY(0);
+        }
+        .btn-primary:disabled {
+            opacity: 0.65;
+            cursor: wait;
         }
     </style>
 </head>
@@ -406,7 +469,7 @@
                         </div>
                     </div>
  
-                    <!-- Active Option 2: Brain Tumor Diagnosis (NOW UNLOCKED & ACTIVE) -->
+                    <!-- Active Option 2: Brain Tumor Diagnosis -->
                     <div id="service-card-tumor" class="select-card rounded-2xl p-4 cursor-pointer flex flex-col justify-between" onclick="selectService('tumor')">
                         <div class="flex items-start justify-between mb-3">
                             <div class="w-11 h-11 rounded-xl bg-purple-500/20 border border-purple-400/40 flex items-center justify-center text-purple-300">
@@ -427,22 +490,23 @@
                         </div>
                     </div>
  
-                    <!-- Disabled Option 3: Bone Fracture -->
-                    <div id="locked-fracture" class="select-card disabled rounded-2xl p-4 flex flex-col justify-between" onclick="triggerLockedNotice('locked-fracture', 'ماژول تشخیص شکستگی استخوان با تصویربرداری X-Ray به‌زودی فعال می‌شود.')">
+                    <!-- Active Option 3: Bone Fracture (Hand & Wrist Active) -->
+                    <div id="service-card-fracture" class="select-card rounded-2xl p-4 cursor-pointer flex flex-col justify-between" onclick="selectService('fracture')">
                         <div class="flex items-start justify-between mb-3">
-                            <div class="w-11 h-11 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center text-slate-400">
+                            <div class="w-11 h-11 rounded-xl bg-amber-500/20 border border-amber-400/40 flex items-center justify-center text-amber-300">
                                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                                 </svg>
                             </div>
-                            <span class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-slate-800 text-slate-400 border border-slate-700">
-                                🔒 به‌زودی
+                            <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 flex items-center gap-1">
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
+                                فعال • دست و مچ
                             </span>
                         </div>
                         <div>
-                            <h3 class="text-base font-bold text-slate-300 mb-1">تشخیص شکستگی استخوان</h3>
-                            <p class="text-xs text-slate-500 leading-relaxed">
-                                پردازش تصاویر رادیولوژی (X-Ray) برای تشخیص ترک و شکستگی
+                            <h3 class="text-base font-extrabold text-white mb-1">تشخیص شکستگی استخوان</h3>
+                            <p class="text-xs text-slate-300 leading-relaxed">
+                                پردازش تصاویر رادیولوژی (X-Ray) دست و مچ دست با شبکه عصبی کانولوشن (CNN)
                             </p>
                         </div>
                     </div>
@@ -483,7 +547,7 @@
         </section>
  
         <!-- ==========================================
-             STEP 2: MODEL SELECTION (DYNAMIC FOR DIABETES OR TUMOR)
+             STEP 2: MODEL SELECTION (DIABETES / TUMOR / FRACTURE)
              ========================================== -->
         <section id="step2" class="wizard-step">
             <div class="glass-card rounded-3xl p-6 sm:p-8">
@@ -526,7 +590,7 @@
             <div id="topResultWrapper">
                 <div class="result-inner">
  
-                    <!-- Scanning Animation State -->
+                    <!-- Scanning Animation State (Used for Diabetes & Tumor) -->
                     <div id="scanWaveBox" class="hidden glass-card rounded-3xl p-6 text-center">
                         <svg class="w-40 h-12 mx-auto text-sky-400" viewBox="0 0 200 50" fill="none">
                             <path class="ecg-line" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"
@@ -587,7 +651,7 @@
                         </button>
                     </div>
  
-                    <div class="flex items-center gap-1.5">
+                    <div id="presetButtonsContainer" class="flex items-center gap-1.5">
                         <button id="presetSafeBtn" onclick="applyPreset('safe')" class="px-2.5 py-1 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300 border border-emerald-500/20 text-[11px] font-semibold transition cursor-pointer">
                             نمونه سالم
                         </button>
@@ -663,7 +727,7 @@
                         <input id="inp-growth-rate" type="range" min="0.10" max="3.50" step="0.05" value="1.50" class="clean-slider" oninput="handleSlider('growth-rate')">
                     </div>
  
-                    <!-- 3. Primary Neurological Symptom (Symptom_2) -->
+                    <!-- 3. Primary Neurological Symptom -->
                     <div class="slider-row">
                         <div class="flex items-center justify-between mb-2.5">
                             <span class="text-sm font-bold text-slate-200">علامت بالینی غالب (Symptom)</span>
@@ -716,13 +780,135 @@
                     </div>
  
                 </div>
+
+                <!-- ==========================================
+                     FORM C: BONE FRACTURE X-RAY INPUTS (HAND & WRIST ACTIVE, FOOT & HEAD LOCKED)
+                     ========================================== -->
+                <div id="fractureInputsPanel" class="space-y-4 hidden">
+                    
+                    <!-- 1. Target Anatomy Selector (Hand Active, Leg & Skull Locked) -->
+                    <div class="slider-row">
+                        <div class="flex items-center justify-between mb-2.5">
+                            <span class="text-sm font-bold text-slate-200">ناحیه آناتومی تصویر رادیولوژی</span>
+                            <span id="tmStatusBadge" class="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-amber-500/15 text-amber-300 border border-amber-500/30">
+                                ⏳ در حال اتصال به مدل...
+                            </span>
+                        </div>
+                        <div class="grid grid-cols-3 gap-2" id="group-anatomy">
+                            <!-- Active: Hand & Wrist -->
+                            <button type="button" class="choice-pill active py-2.5 px-2 rounded-xl text-xs font-bold cursor-pointer flex items-center justify-center gap-1.5">
+                                <span>🖐️</span>
+                                <span>دست و مچ دست</span>
+                            </button>
+                            <!-- Locked: Foot & Ankle -->
+                            <button id="locked-anatomy-leg" type="button" onclick="triggerAnatomyLock('locked-anatomy-leg', 'پا و مچ پا')" class="choice-pill locked-pill py-2.5 px-2 rounded-xl text-xs font-bold flex items-center justify-center gap-1">
+                                <span>🔒</span>
+                                <span>پا و مچ پا</span>
+                            </button>
+                            <!-- Locked: Head & Skull -->
+                            <button id="locked-anatomy-head" type="button" onclick="triggerAnatomyLock('locked-anatomy-head', 'جمجمه و سر')" class="choice-pill locked-pill py-2.5 px-2 rounded-xl text-xs font-bold flex items-center justify-center gap-1">
+                                <span>🔒</span>
+                                <span>جمجمه و سر</span>
+                            </button>
+                        </div>
+                        <!-- Mini Notice Toast for Locked Anatomy -->
+                        <div id="anatomyLockedToast" class="hidden mt-3 px-3 py-2 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-300 text-[11px] text-center font-medium"></div>
+                    </div>
+
+                    <!-- 2. X-Ray Image Upload, Animated Uploading State & Clean Preview Box -->
+                    <div id="xrayDropzone" class="xray-dropzone rounded-2xl p-5 text-center cursor-pointer relative overflow-hidden" onclick="triggerFileSelect()">
+                        <input type="file" id="xrayFileInput" accept="image/*" class="hidden" onchange="handleXrayUpload(event)">
+                        
+                        <!-- State A: Empty Upload Prompt -->
+                        <div id="xrayEmptyPrompt" class="py-6">
+                            <div class="w-14 h-14 rounded-2xl bg-sky-500/15 border border-sky-400/30 flex items-center justify-center text-sky-400 mx-auto mb-3 shadow-inner">
+                                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
+                                </svg>
+                            </div>
+                            <p class="text-sm font-extrabold text-white mb-1">تصویر رادیولوژی «دست و مچ» را انتخاب کنید</p>
+                            <p class="text-xs text-slate-400">از پوشه <code class="text-sky-300">testing</code> یک عکس انتخاب کنید یا اینجا رها کنید</p>
+                        </div>
+
+                        <!-- State B: Animated Uploading Progress State -->
+                        <div id="xrayUploadingBox" class="hidden py-8 px-4">
+                            <div class="relative w-14 h-14 mx-auto mb-4 flex items-center justify-center">
+                                <div class="absolute inset-0 rounded-full border-4 border-sky-500/20"></div>
+                                <div class="absolute inset-0 rounded-full border-4 border-sky-400 border-t-transparent animate-spin"></div>
+                                <span id="uploadPercentText" class="text-xs font-black text-sky-300">0%</span>
+                            </div>
+                            <p class="text-sm font-extrabold text-white mb-1.5 animate-pulse">
+                                در حال آپلود عکس خود هستید، منتظر بمانید...
+                            </p>
+                            <p class="text-xs text-slate-400 mb-4">در حال بهینه‌سازی تصویر رادیولوژی برای اسکن هوش مصنوعی</p>
+                            <div class="w-full max-w-xs mx-auto h-2 bg-slate-800 rounded-full overflow-hidden">
+                                <div id="uploadProgressBar" class="h-full bg-gradient-to-l from-sky-400 to-indigo-500 transition-all duration-150" style="width: 0%"></div>
+                            </div>
+                        </div>
+
+                        <!-- State C: Uploaded Image Preview Container (No Result Shown Until Button Clicked) -->
+                        <div id="xrayPreviewContainer" class="hidden relative rounded-xl overflow-hidden bg-black/75 border border-slate-700/80 max-h-72 flex items-center justify-center">
+                            <img id="xrayImageElement" src="" alt="X-Ray Preview" class="max-h-64 w-auto object-contain mx-auto rounded-lg" crossorigin="anonymous" />
+                            
+                            <!-- Laser Line & Grid Overlay (Hidden on upload, Active ONLY when clicking Diagnose Button) -->
+                            <div id="xrayLaser" class="laser-line hidden"></div>
+                            <div id="xrayScanOverlay" class="scan-grid-overlay absolute inset-0 hidden pointer-events-none flex items-start justify-center pt-3">
+                                <span class="px-3 py-1 rounded-full bg-slate-900/90 border border-sky-400/50 text-sky-300 text-xs font-extrabold shadow-lg backdrop-blur-md flex items-center gap-1.5">
+                                    <span class="w-2 h-2 rounded-full bg-sky-400 animate-ping"></span>
+                                    در حال اسکن لیزری بافت استخوان...
+                                </span>
+                            </div>
+
+                            <!-- Ready Status Badge (Top Right) -->
+                            <span id="xrayReadyBadge" class="absolute top-2.5 right-2.5 bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 px-2.5 py-1 rounded-lg text-[11px] font-bold backdrop-blur-md">
+                                ✓ آپلود کامل شد • آماده اسکن
+                            </span>
+
+                            <!-- Change Photo Button (Bottom Left) -->
+                            <button type="button" onclick="event.stopPropagation(); triggerFileSelect();" class="absolute bottom-2.5 left-2.5 bg-slate-900/85 hover:bg-slate-800 text-sky-300 border border-sky-500/30 px-3 py-1.5 rounded-xl text-xs font-bold backdrop-blur-md transition cursor-pointer z-30">
+                                🔄 تغییر تصویر
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 3. Teachable Machine Confidence Bars (Hidden on upload, shown ONLY after Laser Scan finishes) -->
+                    <div id="tmConfidenceBox" class="slider-row hidden space-y-3">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold text-slate-300">خروجی شبکه عصبی (Teachable Machine):</span>
+                            <span id="tmTopClassBadge" class="text-xs font-extrabold text-sky-400">تحلیل تکمیل شد</span>
+                        </div>
+
+                        <!-- Fractured Probability Bar -->
+                        <div>
+                            <div class="flex justify-between text-xs font-bold mb-1">
+                                <span class="text-rose-300">دارای شکستگی (Fractured)</span>
+                                <span id="probFracturedText" class="text-rose-400">0%</span>
+                            </div>
+                            <div class="w-full h-2.5 bg-slate-800 rounded-full overflow-hidden">
+                                <div id="probFracturedBar" class="h-full bg-gradient-to-l from-rose-500 to-pink-500 transition-all duration-500" style="width: 0%"></div>
+                            </div>
+                        </div>
+
+                        <!-- Normal Probability Bar -->
+                        <div>
+                            <div class="flex justify-between text-xs font-bold mb-1">
+                                <span class="text-emerald-300">سالم / بدون شکستگی (Normal)</span>
+                                <span id="probNormalText" class="text-emerald-400">0%</span>
+                            </div>
+                            <div class="w-full h-2.5 bg-slate-800 rounded-full overflow-hidden">
+                                <div id="probNormalBar" class="h-full bg-gradient-to-l from-emerald-500 to-teal-400 transition-all duration-500" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
  
                 <!-- Primary Action Button: See Result -->
-                <button onclick="showDiagnosisResult()" class="btn-primary w-full mt-6 py-4 rounded-2xl text-white font-extrabold text-lg flex items-center justify-center gap-2.5 cursor-pointer">
+                <button id="mainDiagnoseBtn" onclick="showDiagnosisResult()" class="btn-primary w-full mt-6 py-4 rounded-2xl text-white font-extrabold text-lg flex items-center justify-center gap-2.5 cursor-pointer">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                     </svg>
-                    <span>دیدن نتیجه</span>
+                    <span id="mainDiagnoseBtnText">دیدن نتیجه</span>
                 </button>
  
                 <!-- Footer Back Buttons -->
@@ -752,7 +938,7 @@
         // GLOBAL STATE & MODELS CONFIGURATION
         // =====================================================
         let currentStep = 1;
-        let selectedService = 'diabetes'; // 'diabetes' or 'tumor'
+        let selectedService = 'diabetes'; // 'diabetes', 'tumor', or 'fracture'
         let selectedModelKey = 'c50_tree';
  
         // Brain Tumor Categorical State
@@ -761,8 +947,18 @@
             mri: 'Negative',
             followup: 'No'
         };
+
+        // Bone Fracture State & Teachable Machine Model Config
+        const TM_MODEL_URL = 'https://teachablemachine.withgoogle.com/models/PFYqRlANT/';
+        let tmModel = null;
+        let isTmLoading = false;
+        let isUploadingXray = false;
+        let isScanningXray = false;
+        let isXrayUploaded = false;
+        let fractureAnatomy = 'دست و مچ دست';
+        let lastFracturePrediction = null;
  
-        // DIABETES MODELS (Sorted by Priority)
+        // DIABETES MODELS
         const DIABETES_MODELS = [
             {
                 key: 'c50_tree',
@@ -816,7 +1012,7 @@
             }
         ];
  
-        // BRAIN TUMOR MODELS (Sorted by Accuracy & Priority - Editable Accuracy Percentages)
+        // BRAIN TUMOR MODELS
         const TUMOR_MODELS = [
             {
                 key: 'tumor_c5',
@@ -849,6 +1045,36 @@
                 shortName: 'درخت C&R Tree (تومور مغزی)'
             }
         ];
+
+        // BONE FRACTURE VISION MODELS (TEACHABLE MACHINE CNN)
+        const FRACTURE_MODELS = [
+            {
+                key: 'tm_cnn_standard',
+                rank: '#1',
+                code: 'CNN',
+                color: 'emerald',
+                name: 'شبکه عصبی کانولوشن دست و مچ (Teachable Machine)',
+                badge: '★ اولویت اول • مدل اختصاصی کاگل شما',
+                desc: 'پردازش مستقیم پیکسل‌های رادیولوژی X-Ray دست و مچ دست (آستانه استاندارد ۵۰٪)',
+                shortName: 'شبکه عصبی CNN (دست و مچ)'
+            },
+            {
+                key: 'tm_cnn_sensitive',
+                rank: '#2',
+                code: 'ER-AI',
+                color: 'amber',
+                name: 'حالت حساسیت بالای اورژانس (High-Sensitivity)',
+                badge: 'اولویت دوم • غربالگری ترک‌های مویی (آستانه ۳۵٪)',
+                desc: 'استفاده از مدل CNN شما با حساسیت بالا جهت جلوگیری از خطای نادیده گرفتن ترک‌های ظریف دست و مچ',
+                shortName: 'مدل CNN حساسیت بالا (دست و مچ)'
+            }
+        ];
+
+        function getModelsListByService(service) {
+            if (service === 'diabetes') return DIABETES_MODELS;
+            if (service === 'tumor') return TUMOR_MODELS;
+            return FRACTURE_MODELS;
+        }
  
         // =====================================================
         // STEP 1: SERVICE SELECTION
@@ -859,18 +1085,26 @@
  
             const cardDiabetes = document.getElementById('service-card-diabetes');
             const cardTumor = document.getElementById('service-card-tumor');
+            const cardFracture = document.getElementById('service-card-fracture');
             const nextBtnText = document.getElementById('step1NextBtnText');
  
+            cardDiabetes.classList.remove('selected');
+            cardTumor.classList.remove('selected');
+            cardFracture.classList.remove('selected');
+
             if (service === 'diabetes') {
                 cardDiabetes.classList.add('selected');
-                cardTumor.classList.remove('selected');
                 selectedModelKey = DIABETES_MODELS[0].key;
                 nextBtnText.textContent = 'مرحله بعد: انتخاب مدل تشخیص دیابت';
             } else if (service === 'tumor') {
                 cardTumor.classList.add('selected');
-                cardDiabetes.classList.remove('selected');
                 selectedModelKey = TUMOR_MODELS[0].key;
                 nextBtnText.textContent = 'مرحله بعد: انتخاب مدل تشخیص تومور مغزی';
+            } else if (service === 'fracture') {
+                cardFracture.classList.add('selected');
+                selectedModelKey = FRACTURE_MODELS[0].key;
+                nextBtnText.textContent = 'مرحله بعد: انتخاب مدل تشخیص شکستگی دست و مچ';
+                ensureTeachableMachineLoaded();
             }
         }
  
@@ -882,7 +1116,7 @@
             card.classList.add('shake-locked');
  
             const toast = document.getElementById('lockedToast');
-            toast.textContent = '⚠️ ' + message + ' (در حال حاضر بخش‌های «تشخیص دیابت» و «تشخیص تومور مغزی» فعال هستند)';
+            toast.textContent = '⚠️ ' + message;
             toast.classList.remove('hidden');
  
             if (toastTimer) clearTimeout(toastTimer);
@@ -890,23 +1124,43 @@
                 toast.classList.add('hidden');
             }, 4000);
         }
+
+        let anatomyToastTimer = null;
+        function triggerAnatomyLock(btnId, regionTitle) {
+            const btn = document.getElementById(btnId);
+            if (btn) {
+                btn.classList.remove('shake-locked');
+                void btn.offsetWidth;
+                btn.classList.add('shake-locked');
+            }
+            const toast = document.getElementById('anatomyLockedToast');
+            if (toast) {
+                toast.textContent = `🔒 مدل «${regionTitle}» هنوز آموزش ندیده است. در حال حاضر فقط تشخیص شکستگی «دست و مچ دست» فعال است.`;
+                toast.classList.remove('hidden');
+                if (anatomyToastTimer) clearTimeout(anatomyToastTimer);
+                anatomyToastTimer = setTimeout(() => {
+                    toast.classList.add('hidden');
+                }, 4000);
+            }
+        }
  
         // =====================================================
         // STEP 2: DYNAMIC MODEL LIST RENDERING
         // =====================================================
         function renderModelsForCurrentService() {
             const listEl = document.getElementById('dynamicModelList');
-            const models = selectedService === 'diabetes' ? DIABETES_MODELS : TUMOR_MODELS;
+            const models = getModelsListByService(selectedService);
  
-            // Ensure selectedModelKey belongs to current service
             if (!models.some(m => m.key === selectedModelKey)) {
                 selectedModelKey = models[0].key;
             }
  
-            document.getElementById('step2Title').textContent =
-                selectedService === 'diabetes'
-                    ? 'مدل تشخیص دیابت را انتخاب کنید'
-                    : 'مدل تشخیص تومور مغزی را انتخاب کنید';
+            const titleMap = {
+                diabetes: 'مدل تشخیص دیابت را انتخاب کنید',
+                tumor: 'مدل تشخیص تومور مغزی را انتخاب کنید',
+                fracture: 'مدل بینایی ماشین (دست و مچ) را انتخاب کنید'
+            };
+            document.getElementById('step2Title').textContent = titleMap[selectedService];
  
             const colorClasses = {
                 emerald: {
@@ -923,7 +1177,7 @@
                 },
                 amber: {
                     box: 'bg-amber-500/15 border-amber-400/30 text-amber-300',
-                    badge: 'bg-amber-500/20 text-amber-300'
+                    badge: 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
                 },
                 pink: {
                     box: 'bg-pink-500/15 border-pink-400/30 text-pink-300',
@@ -966,6 +1220,7 @@
         // WIZARD STEP NAVIGATION
         // =====================================================
         function goToStep(stepNumber) {
+            if (isScanningXray || isUploadingXray) return;
             currentStep = stepNumber;
             hideTopResult();
  
@@ -974,25 +1229,35 @@
             }
  
             if (stepNumber === 3) {
-                const models = selectedService === 'diabetes' ? DIABETES_MODELS : TUMOR_MODELS;
+                const models = getModelsListByService(selectedService);
                 const activeMeta = models.find(m => m.key === selectedModelKey) || models[0];
                 document.getElementById('activeModelName').textContent = activeMeta.shortName;
  
                 const diabetesPanel = document.getElementById('diabetesInputsPanel');
                 const tumorPanel = document.getElementById('tumorInputsPanel');
+                const fracturePanel = document.getElementById('fractureInputsPanel');
+                const presetContainer = document.getElementById('presetButtonsContainer');
                 const safeBtn = document.getElementById('presetSafeBtn');
                 const riskBtn = document.getElementById('presetRiskBtn');
  
+                diabetesPanel.classList.add('hidden');
+                tumorPanel.classList.add('hidden');
+                fracturePanel.classList.add('hidden');
+
                 if (selectedService === 'diabetes') {
                     diabetesPanel.classList.remove('hidden');
-                    tumorPanel.classList.add('hidden');
+                    presetContainer.classList.remove('hidden');
                     safeBtn.textContent = 'نمونه سالم';
                     riskBtn.textContent = 'نمونه دیابتی';
-                } else {
-                    diabetesPanel.classList.add('hidden');
+                } else if (selectedService === 'tumor') {
                     tumorPanel.classList.remove('hidden');
+                    presetContainer.classList.remove('hidden');
                     safeBtn.textContent = 'نمونه خوش‌خیم';
                     riskBtn.textContent = 'نمونه بدخیم';
+                } else if (selectedService === 'fracture') {
+                    fracturePanel.classList.remove('hidden');
+                    presetContainer.classList.add('hidden');
+                    ensureTeachableMachineLoaded();
                 }
                 initAllSliders();
             }
@@ -1002,10 +1267,16 @@
                 else el.classList.remove('active');
             });
  
+            const step3TitleMap = {
+                diabetes: 'گام ۳ از ۳: ارزیابی بالینی دیابت',
+                tumor: 'گام ۳ از ۳: ارزیابی تومور مغزی',
+                fracture: 'گام ۳ از ۳: اسکن رادیولوژی دست و مچ دست'
+            };
+
             const titles = {
                 1: 'گام ۱ از ۳: انتخاب خدمت پزشکی',
                 2: 'گام ۲ از ۳: انتخاب مدل هوش مصنوعی',
-                3: selectedService === 'diabetes' ? 'گام ۳ از ۳: ارزیابی بالینی دیابت' : 'گام ۳ از ۳: ارزیابی تومور مغزی'
+                3: step3TitleMap[selectedService]
             };
             document.getElementById('stepTitleBadge').textContent = titles[stepNumber];
  
@@ -1022,6 +1293,187 @@
  
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
+ 
+        // =====================================================
+        // TEACHABLE MACHINE MODEL LOADING & ANIMATED UPLOAD
+        // =====================================================
+        async function ensureTeachableMachineLoaded() {
+            const badge = document.getElementById('tmStatusBadge');
+            if (tmModel) {
+                if (badge) {
+                    badge.textContent = '✅ مدل CNN آماده است';
+                    badge.className = 'text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30';
+                }
+                return tmModel;
+            }
+            if (isTmLoading) return null;
+
+            try {
+                isTmLoading = true;
+                if (badge) {
+                    badge.textContent = '⏳ در حال بارگذاری مدل...';
+                }
+                const modelURL = TM_MODEL_URL + 'model.json';
+                const metadataURL = TM_MODEL_URL + 'metadata.json';
+                tmModel = await tmImage.load(modelURL, metadataURL);
+                if (badge) {
+                    badge.textContent = '✅ مدل CNN آماده است';
+                    badge.className = 'text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30';
+                }
+                return tmModel;
+            } catch (err) {
+                console.error('خطا در بارگذاری مدل Teachable Machine:', err);
+                if (badge) {
+                    badge.textContent = '⚠️ خطا در اتصال اینترنت/مدل';
+                    badge.className = 'text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-rose-500/20 text-rose-300 border border-rose-500/30';
+                }
+                return null;
+            } finally {
+                isTmLoading = false;
+            }
+        }
+
+        function triggerFileSelect() {
+            if (isUploadingXray || isScanningXray) return;
+            document.getElementById('xrayFileInput').click();
+        }
+
+        function handleXrayUpload(event) {
+            const file = event.target.files && event.target.files[0];
+            if (!file) return;
+            processXrayFileWithAnimation(file);
+        }
+
+        let uploadInterval = null;
+        function processXrayFileWithAnimation(file) {
+            if (isScanningXray) return;
+
+            // Hide previous results & confidence bars
+            hideTopResult();
+            document.getElementById('tmConfidenceBox').classList.add('hidden');
+            document.getElementById('xrayLaser').classList.add('hidden');
+            document.getElementById('xrayScanOverlay').classList.add('hidden');
+
+            const emptyPrompt = document.getElementById('xrayEmptyPrompt');
+            const uploadingBox = document.getElementById('xrayUploadingBox');
+            const previewBox = document.getElementById('xrayPreviewContainer');
+            const progressBar = document.getElementById('uploadProgressBar');
+            const percentText = document.getElementById('uploadPercentText');
+            const imgEl = document.getElementById('xrayImageElement');
+            const readyBadge = document.getElementById('xrayReadyBadge');
+
+            isUploadingXray = true;
+            isXrayUploaded = false;
+
+            emptyPrompt.classList.add('hidden');
+            previewBox.classList.add('hidden');
+            uploadingBox.classList.remove('hidden');
+            progressBar.style.width = '0%';
+            percentText.textContent = '0%';
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                imgEl.src = e.target.result;
+
+                let progress = 0;
+                if (uploadInterval) clearInterval(uploadInterval);
+
+                uploadInterval = setInterval(() => {
+                    progress += Math.floor(Math.random() * 14) + 10;
+                    if (progress >= 100) {
+                        progress = 100;
+                        clearInterval(uploadInterval);
+                        progressBar.style.width = '100%';
+                        percentText.textContent = '100%';
+
+                        setTimeout(() => {
+                            uploadingBox.classList.add('hidden');
+                            previewBox.classList.remove('hidden');
+                            previewBox.classList.remove('image-pop-in');
+                            void previewBox.offsetWidth;
+                            previewBox.classList.add('image-pop-in');
+
+                            readyBadge.textContent = '✓ آپلود کامل شد • آماده اسکن';
+                            readyBadge.className = 'absolute top-2.5 right-2.5 bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 px-2.5 py-1 rounded-lg text-[11px] font-bold backdrop-blur-md';
+
+                            isUploadingXray = false;
+                            isXrayUploaded = true;
+                        }, 300);
+                    } else {
+                        progressBar.style.width = progress + '%';
+                        percentText.textContent = progress + '%';
+                    }
+                }, 140);
+            };
+            reader.readAsDataURL(file);
+        }
+
+        async function computeTeachableMachineProbabilities(imgElement) {
+            const model = await ensureTeachableMachineLoaded();
+            if (!model) return null;
+
+            const predictions = await model.predict(imgElement);
+            let fracturedProb = 0;
+            let normalProb = 0;
+
+            predictions.forEach((p, idx) => {
+                const name = p.className.toLowerCase();
+                if (name.includes('fract') || (!name.includes('norm') && idx === 0)) {
+                    fracturedProb = p.probability;
+                } else if (name.includes('norm') || name.includes('not') || idx === 1) {
+                    normalProb = p.probability;
+                }
+            });
+
+            lastFracturePrediction = { fracturedProb, normalProb };
+            return lastFracturePrediction;
+        }
+
+        function renderFractureConfidenceBars(pred) {
+            const confBox = document.getElementById('tmConfidenceBox');
+            const topBadge = document.getElementById('tmTopClassBadge');
+            confBox.classList.remove('hidden');
+
+            const fracPct = (pred.fracturedProb * 100).toFixed(1);
+            const normPct = (pred.normalProb * 100).toFixed(1);
+
+            document.getElementById('probFracturedText').textContent = fracPct + '%';
+            document.getElementById('probFracturedBar').style.width = fracPct + '%';
+            document.getElementById('probNormalText').textContent = normPct + '%';
+            document.getElementById('probNormalBar').style.width = normPct + '%';
+
+            const threshold = selectedModelKey === 'tm_cnn_sensitive' ? 0.35 : 0.50;
+            if (pred.fracturedProb >= threshold) {
+                topBadge.textContent = `تشخیص: دارای شکستگی (${fracPct}%)`;
+                topBadge.className = 'text-xs font-extrabold text-rose-400';
+            } else {
+                topBadge.textContent = `تشخیص: سالم / Normal (${normPct}%)`;
+                topBadge.className = 'text-xs font-extrabold text-emerald-400';
+            }
+        }
+
+        // Drag and drop support for X-Ray box
+        window.addEventListener('DOMContentLoaded', () => {
+            initAllSliders();
+            const dropzone = document.getElementById('xrayDropzone');
+            if (dropzone) {
+                dropzone.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    if (!isUploadingXray && !isScanningXray) dropzone.classList.add('dragover');
+                });
+                dropzone.addEventListener('dragleave', () => {
+                    dropzone.classList.remove('dragover');
+                });
+                dropzone.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    dropzone.classList.remove('dragover');
+                    if (isUploadingXray || isScanningXray) return;
+                    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+                        processXrayFileWithAnimation(e.dataTransfer.files[0]);
+                    }
+                });
+            }
+        });
  
         // =====================================================
         // SLIDERS & PILL CHOICES HANDLERS
@@ -1157,10 +1609,8 @@
         }
  
         // =====================================================
-        // BRAIN TUMOR MODELS EVALUATION (FROM UPLOADED FILES)
+        // BRAIN TUMOR MODELS EVALUATION
         // =====================================================
- 
-        // 1. Tumor_C&RTree_Model.txt
         function evaluateTumorCRTree(t) {
             let isMalignant = false;
             if (['Headache', 'Nausea', 'Seizures'].includes(t.symptom)) {
@@ -1170,7 +1620,6 @@
                     isMalignant = true;
                 }
             } else {
-                // Vision Issues branch
                 isMalignant = (t.growthRate <= 2.390) || (t.size > 4.5);
             }
  
@@ -1183,7 +1632,6 @@
             };
         }
  
-        // 2. Tumor_C5_Model.txt
         function evaluateTumorC50(t) {
             let isMalignant = false;
  
@@ -1193,11 +1641,9 @@
                 } else if (t.symptom === 'Nausea') {
                     isMalignant = (t.growthRate > 2.034) || (t.mri === 'Positive');
                 } else {
-                    // Headache
                     isMalignant = (t.size > 4.476) || (t.growthRate > 2.180);
                 }
             } else {
-                // Follow_Up_Required = No
                 if (t.mri === 'Positive' && (t.size > 3.139 || t.growthRate > 2.282)) {
                     isMalignant = true;
                 } else if (t.symptom === 'Vision Issues' && t.size > 6.480) {
@@ -1216,7 +1662,6 @@
             };
         }
  
-        // 3. Tumor_BayesNet_Model.txt (TAN Structure Maximum Likelihood)
         function evaluateTumorBayesNet(t) {
             let logOdds = -1.35;
             if (t.followUp === 'Yes') logOdds += 1.15;
@@ -1239,14 +1684,97 @@
         }
  
         // =====================================================
-        // TRIGGER TOP ANIMATED RESULT
+        // TRIGGER DIAGNOSIS & LASER SCAN SEQUENCE
         // =====================================================
         let scanTimeout = null;
-        function showDiagnosisResult() {
-            let result;
-            const models = selectedService === 'diabetes' ? DIABETES_MODELS : TUMOR_MODELS;
+        async function showDiagnosisResult() {
+            if (isUploadingXray || isScanningXray) return;
+
+            const models = getModelsListByService(selectedService);
             const activeMeta = models.find(m => m.key === selectedModelKey) || models[0];
- 
+
+            // SPECIAL FLOW FOR FRACTURE: Scan Laser on Image first, then hide laser & show result
+            if (selectedService === 'fracture') {
+                const imgEl = document.getElementById('xrayImageElement');
+                const dropzone = document.getElementById('xrayDropzone');
+
+                if (!isXrayUploaded || !imgEl || !imgEl.src) {
+                    dropzone.classList.remove('shake-locked');
+                    void dropzone.offsetWidth;
+                    dropzone.classList.add('shake-locked');
+                    triggerAnatomyLock('xrayDropzone', 'ابتدا یک تصویر رادیولوژی دست و مچ آپلود کنید');
+                    const toast = document.getElementById('anatomyLockedToast');
+                    if (toast) {
+                        toast.textContent = '⚠️ لطفاً ابتدا یک عکس رادیولوژی (X-Ray) از دست یا مچ آپلود کنید.';
+                        toast.classList.remove('hidden');
+                    }
+                    return;
+                }
+
+                // Hide any previous top result or bars before starting the laser scan
+                hideTopResult();
+                document.getElementById('tmConfidenceBox').classList.add('hidden');
+
+                const laser = document.getElementById('xrayLaser');
+                const scanOverlay = document.getElementById('xrayScanOverlay');
+                const readyBadge = document.getElementById('xrayReadyBadge');
+                const mainBtn = document.getElementById('mainDiagnoseBtn');
+                const mainBtnText = document.getElementById('mainDiagnoseBtnText');
+
+                isScanningXray = true;
+                mainBtn.disabled = true;
+                mainBtnText.textContent = 'در حال اسکن رادیولوژی... منتظر بمانید';
+
+                readyBadge.classList.add('hidden');
+                laser.classList.remove('hidden');
+                scanOverlay.classList.remove('hidden');
+
+                // Scroll smoothly to the X-ray image so user watches the laser scan
+                dropzone.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+                // Run Teachable Machine inference + wait 2.8 seconds for laser scan effect
+                const [pred] = await Promise.all([
+                    computeTeachableMachineProbabilities(imgEl),
+                    new Promise(resolve => setTimeout(resolve, 2800))
+                ]);
+
+                // Stop laser scan and restore button
+                laser.classList.add('hidden');
+                scanOverlay.classList.add('hidden');
+                readyBadge.classList.remove('hidden');
+                readyBadge.textContent = '✓ اسکن هوش مصنوعی انجام شد';
+                mainBtn.disabled = false;
+                mainBtnText.textContent = 'دیدن نتیجه';
+                isScanningXray = false;
+
+                if (!pred) {
+                    alert('خطا در ارتباط با مدل هوش مصنوعی. لطفاً اتصال اینترنت خود را بررسی کنید.');
+                    return;
+                }
+
+                // Show confidence bars below the image
+                renderFractureConfidenceBars(pred);
+
+                const threshold = selectedModelKey === 'tm_cnn_sensitive' ? 0.35 : 0.50;
+                const isFractured = pred.fracturedProb >= threshold;
+                const confidencePct = (isFractured ? pred.fracturedProb * 100 : pred.normalProb * 100).toFixed(1);
+
+                const fractureResult = {
+                    isPositive: isFractured,
+                    title: isFractured
+                        ? `شکستگی در «${fractureAnatomy}» تشخیص داده شد`
+                        : `استخوان «${fractureAnatomy}» سالم است (Normal)`,
+                    explanation: isFractured
+                        ? `پس از اسکن تصویر رادیولوژی، مدل بینایی ماشین با اطمینان ${confidencePct}% وجود ترک یا شکستگی در ${fractureAnatomy} را تایید کرد.`
+                        : `پس از اسکن تصویر رادیولوژی، مدل بینایی ماشین با اطمینان ${confidencePct}% استخوان ${fractureAnatomy} را سالم و بدون شکستگی ارزیابی کرد.`
+                };
+
+                displayFinalVerdictCard(fractureResult, activeMeta, true);
+                return;
+            }
+
+            // STANDARD FLOW FOR DIABETES & BRAIN TUMOR
+            let result;
             if (selectedService === 'diabetes') {
                 const d = {
                     glucose: parseFloat(document.getElementById('inp-glucose').value),
@@ -1259,7 +1787,7 @@
                 else if (selectedModelKey === 'random_trees') result = evaluateDiabetesRandomTrees(d);
                 else if (selectedModelKey === 'logistic') result = evaluateDiabetesLogistic(d);
                 else result = evaluateDiabetesNeuralNet(d);
-            } else {
+            } else if (selectedService === 'tumor') {
                 const t = {
                     size: parseFloat(document.getElementById('inp-tumor-size').value),
                     growthRate: parseFloat(document.getElementById('inp-growth-rate').value),
@@ -1271,33 +1799,35 @@
                 else if (selectedModelKey === 'tumor_bayes') result = evaluateTumorBayesNet(t);
                 else result = evaluateTumorCRTree(t);
             }
- 
+
+            displayFinalVerdictCard(result, activeMeta, false);
+        }
+
+        function displayFinalVerdictCard(result, activeMeta, skipEcgDelay) {
             const wrapper = document.getElementById('topResultWrapper');
             const scanBox = document.getElementById('scanWaveBox');
             const heroCard = document.getElementById('verdictHeroCard');
- 
+
             window.scrollTo({ top: 0, behavior: 'smooth' });
- 
+
             wrapper.classList.add('open');
             heroCard.classList.add('hidden');
             heroCard.classList.remove('animate-sweep');
-            document.getElementById('scanModelText').textContent = `در حال ارزیابی شاخص‌ها با ${activeMeta.shortName}...`;
-            scanBox.classList.remove('hidden');
- 
+
             if (scanTimeout) clearTimeout(scanTimeout);
- 
-            scanTimeout = setTimeout(() => {
+
+            const renderHero = () => {
                 scanBox.classList.add('hidden');
                 heroCard.classList.remove('hidden');
- 
+
                 const halo = document.getElementById('verdictHalo');
                 const svgBox = document.getElementById('verdictSvgContainer');
                 const title = document.getElementById('verdictTitle');
                 const desc = document.getElementById('verdictDesc');
                 const badge = document.getElementById('resultModelBadge');
- 
+
                 badge.textContent = 'مدل: ' + activeMeta.shortName;
- 
+
                 if (result.isPositive) {
                     document.body.className = 'py-7 px-4 sm:px-6 flex flex-col items-center justify-center min-h-screen state-diabetic';
                     heroCard.className = 'hero-card theme-diabetic animate-sweep';
@@ -1323,9 +1853,18 @@
                     title.textContent = result.title;
                     title.className = 'text-2xl sm:text-3xl font-black text-emerald-100 tracking-tight mb-2';
                 }
- 
+
                 desc.textContent = result.explanation;
-            }, 420);
+            };
+
+            if (skipEcgDelay) {
+                scanBox.classList.add('hidden');
+                renderHero();
+            } else {
+                document.getElementById('scanModelText').textContent = `در حال ارزیابی با ${activeMeta.shortName}...`;
+                scanBox.classList.remove('hidden');
+                scanTimeout = setTimeout(renderHero, 420);
+            }
         }
  
         function hideTopResult() {
@@ -1347,7 +1886,7 @@
                     document.getElementById('inp-insulin').value = 185;
                     document.getElementById('inp-dpf').value = 0.78;
                 }
-            } else {
+            } else if (selectedService === 'tumor') {
                 if (type === 'safe') {
                     document.getElementById('inp-tumor-size').value = 1.8;
                     document.getElementById('inp-growth-rate').value = 1.15;
@@ -1365,8 +1904,6 @@
             initAllSliders();
             showDiagnosisResult();
         }
- 
-        window.addEventListener('DOMContentLoaded', initAllSliders);
     </script>
 </body>
 </html>
